@@ -1,34 +1,41 @@
 {
-    "name": "smart-buffer",
-    "version": "1.0.1",
-    "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
-    "main": "lib/smart-buffer.js",
-    "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/JoshGlazebrook/smart-buffer.git"
-    },
-    "bugs": {
-        "url": "https://github.com/JoshGlazebrook/smart-buffer/issues"
-    },
-    "keywords": [
-        "buffer",
-        "smart",
-        "cursor",
-        "simple",
-        "packet",
-        "network",
-        "null terminated",
-        "growing"
-    ],
-    "engines": {
-        "node": ">= 0.10.15",
-        "npm": ">= 1.3.5"
-    },
-    "author": "Josh Glazebrook",
-    "license": "MIT",
-    "readmeFilename": "README.md",
-    "devDependencies": {
-        "chai": "~1.7.2"
-    }
+  "name": "smart-buffer",
+  "version": "1.0.3",
+  "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
+  "main": "lib/smart-buffer.js",
+  "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JoshGlazebrook/smart-buffer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoshGlazebrook/smart-buffer/issues"
+  },
+  "keywords": [
+    "buffer",
+    "smart",
+    "cursor",
+    "simple",
+    "packet",
+    "network",
+    "null terminated",
+    "growing"
+  ],
+  "engines": {
+    "node": ">= 0.10.15",
+    "npm": ">= 1.3.5"
+  },
+  "author": "Josh Glazebrook",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "mocha": "^2.2.3"
+  },
+  "dependencies": {
+
+  },
+  "scripts": {
+    "test": "mocha test/test.js"
+  }
 }

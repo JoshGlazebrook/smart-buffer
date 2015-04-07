@@ -211,7 +211,4 @@ describe("Skipping around data", function() {
         reader.rewind(6);
         assert.strictEqual(reader.readStringNT(), "hello");
     });
-
-
-
 });
