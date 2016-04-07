@@ -168,13 +168,26 @@ describe("Reading/Writing To/From SmartBuffer", function () {
     });
 
     describe("Buffer Values", function () {
-        var buff = new Buffer([0x01, 0x02, 0x04, 0x08, 0x16, 0x32, 0x64]);
-        var reader = new SmartBuffer();
-        reader.writeBuffer(buff);
+        describe("Explicit lengths", function () {
+            var buff = new Buffer([0x01, 0x02, 0x04, 0x08, 0x16, 0x32, 0x64]);
+            var reader = new SmartBuffer();
+            reader.writeBuffer(buff);
 
-        it("should equal the buffer that was written above.", function () {
-            assert.deepEqual(reader.readBuffer(7), buff);
+            it("should equal the buffer that was written above.", function () {
+                assert.deepEqual(reader.readBuffer(7), buff);
+            });
         });
+
+        describe("Implicit lengths", function () {
+            var buff = new Buffer([0x01, 0x02, 0x04, 0x08, 0x16, 0x32, 0x64]);
+            var reader = new SmartBuffer();
+            reader.writeBuffer(buff);
+
+            it("should equal the buffer that was written above.", function () {
+                assert.deepEqual(reader.readBuffer(), buff);
+            });
+        });
+
     });
 
     describe("Inserting values into specific positions", function () {
