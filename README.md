@@ -162,6 +162,14 @@ returns `Buffer`
 > Note: This function uses `slice` to retrieve the Buffer.
 
 
+### SmartBuffer.readBufferNT()
+
+returns `Buffer`
+
+> Note: This reads the next sequence of bytes in the buffer until a null (0x00) value is found. (Null terminated buffer)
+> Note: This function uses `slice` to retrieve the Buffer.
+
+
 ## Writing Data
 
 smart-buffer supports all of the common write functions you will find in the vanilla Buffer class. The only difference is, you do not need to specify which location to write to in your Buffer by default. You do however have the option of **inserting** a piece of data into your smart-buffer at a given location. 
