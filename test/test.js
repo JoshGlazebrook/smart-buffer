@@ -188,6 +188,22 @@ describe("Reading/Writing To/From SmartBuffer", function () {
             });
         });
 
+        describe("Null Terminated Buffer Reading", function () {
+            var buff = new SmartBuffer();
+            buff.writeBuffer(new Buffer([0x01, 0x02, 0x03, 0x04, 0x00, 0x01, 0x02, 0x03]));
+
+            var read1 = buff.readBufferNT();
+            var read2 = buff.readBufferNT();
+
+            it("Should return a length of 4 for the four bytes before the first null in the buffer.", function () {
+                assert.equal(read1.length, 4);
+            });
+
+            it("Should return a length of 3 for the three bytes after the first null in the buffer after reading to end.", function () {
+                assert.equal(read2.length, 3);
+            });
+        })
+
     });
 
     describe("Inserting values into specific positions", function () {
