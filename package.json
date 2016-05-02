@@ -1,6 +1,6 @@
 {
   "name": "smart-buffer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
   "main": "lib/smart-buffer.js",
   "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
@@ -14,12 +14,11 @@
   "keywords": [
     "buffer",
     "smart",
-    "cursor",
-    "simple",
+    "serialize",
     "packet",
     "network",
-    "null terminated",
-    "growing"
+    "cursor",
+    "simple"
   ],
   "engines": {
     "node": ">= 0.10.15",
