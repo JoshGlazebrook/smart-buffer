@@ -30,12 +30,15 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "chai": "^2.2.0",
-    "mocha": "^2.2.3"
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.2.3",
+    "mocha-lcov-reporter": "^1.2.0"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "scripts": {
-    "test": "mocha test/test.js"
+    "test": "mocha test/smart-buffer.test.js",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha recursive test",
+    "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test"
   }
 }
