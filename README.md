@@ -1,4 +1,4 @@
-smart-buffer  [![Build Status](https://travis-ci.org/JoshGlazebrook/smart-buffer.svg?branch=master)](https://travis-ci.org/JoshGlazebrook/smart-buffer)
+smart-buffer  [![Build Status](https://travis-ci.org/JoshGlazebrook/smart-buffer.svg?branch=master)](https://travis-ci.org/JoshGlazebrook/smart-buffer)  [![Coverage Status](https://coveralls.io/repos/github/JoshGlazebrook/smart-buffer/badge.svg?branch=master)](https://coveralls.io/github/JoshGlazebrook/smart-buffer?branch=master)
 =============
 
 smart-buffer is a light Buffer wrapper that takes away the need to keep track of what position to read and write data to and from the underlying Buffer. It also adds null terminating string operations and **grows** as you add more data.
