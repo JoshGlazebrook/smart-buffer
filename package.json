@@ -35,7 +35,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "test": "mocha test/test.js",
+    "test": "mocha test/smart-buffer.test.js",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha recursive test",
     "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test"
   }
