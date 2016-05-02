@@ -30,6 +30,7 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "chai": "^2.2.0",
+    "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "mocha": "^2.2.3"
   },
