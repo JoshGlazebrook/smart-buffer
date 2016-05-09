@@ -1,6 +1,6 @@
 {
   "name": "smart-buffer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
   "main": "lib/smart-buffer.js",
   "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
@@ -34,6 +34,7 @@
     "mocha": "^2.2.3",
     "mocha-lcov-reporter": "^1.2.0"
   },
+  "typings": "typings/index",
   "dependencies": {},
   "scripts": {
     "test": "mocha test/smart-buffer.test.js",
