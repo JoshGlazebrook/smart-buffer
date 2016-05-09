@@ -243,6 +243,13 @@ returns this
 
 returns this
 
+### SmartBuffer.writeBufferNT( value, [offset] )
+> `Buffer` **Buffer value to write**
+
+> `Number` **The position to insert this Buffer's content at**
+
+returns this
+
 
 ## Utility Functions
 

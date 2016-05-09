@@ -227,6 +227,18 @@ describe('Reading/Writing To/From SmartBuffer', function () {
             it('Should return a length of 3 for the three bytes after the first null in the buffer after reading to end.', function () {
                 assert.equal(read2.length, 3);
             });
+        });
+
+        describe('Null Terminated Buffer Writing', function () {
+            var buff = new SmartBuffer();
+            buff.writeBufferNT(new Buffer([0x01, 0x02, 0x03, 0x04]));
+
+            var read1 = buff.readBufferNT();
+
+            it('Should read the correct null terminated buffer data.', function () {
+               assert.equal(read1.length, 4);
+            });
+
         })
 
     });
