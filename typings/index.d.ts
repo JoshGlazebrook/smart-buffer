@@ -373,6 +373,11 @@ declare class SmartBuffer {
      * Destroys the smart buffer instance
      */
     destroy();
+
+    /**
+     * Gets the current length of the smart buffer instance
+     */
+    length: number;
 }
 
 export = SmartBuffer;
