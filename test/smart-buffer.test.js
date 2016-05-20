@@ -193,6 +193,33 @@ describe('Reading/Writing To/From SmartBuffer', function () {
     });
 
     describe('Buffer Values', function () {
+        describe('Writing buffer to position 0', function () {
+            var buff = new SmartBuffer();
+            var frontBuff = new Buffer([1, 2, 3, 4, 5, 6]);
+            buff.writeStringNT('hello');
+            buff.writeBuffer(frontBuff, 0);
+
+            it('should write the buffer to the front of the smart buffer instance', function () {
+                var readBuff = buff.readBuffer(frontBuff.length);
+                assert.deepEqual(readBuff, frontBuff);
+            });
+        });
+
+        describe('Writing null terminated buffer to position 0', function () {
+            var buff = new SmartBuffer();
+            var frontBuff = new Buffer([1, 2, 3, 4, 5, 6]);
+            buff.writeStringNT('hello');
+            buff.writeBufferNT(frontBuff, 0);
+
+            console.log(buff);
+
+            it('should write the buffer to the front of the smart buffer instance', function () {
+                var readBuff = buff.readBufferNT();
+                console.log(readBuff);
+                assert.deepEqual(readBuff, frontBuff);
+            });
+        });
+
         describe('Explicit lengths', function () {
             var buff = new Buffer([0x01, 0x02, 0x04, 0x08, 0x16, 0x32, 0x64]);
             var reader = new SmartBuffer();
@@ -236,7 +263,7 @@ describe('Reading/Writing To/From SmartBuffer', function () {
             var read1 = buff.readBufferNT();
 
             it('Should read the correct null terminated buffer data.', function () {
-               assert.equal(read1.length, 4);
+                assert.equal(read1.length, 4);
             });
 
         })
