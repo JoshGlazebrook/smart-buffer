@@ -14,8 +14,8 @@
   "keywords": [
     "buffer",
     "smart",
-    "serialize",
     "packet",
+    "serialize",
     "network",
     "cursor",
     "simple"
