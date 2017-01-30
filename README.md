@@ -25,6 +25,9 @@ Requirements:
 #### Note:
 smart-buffer can be used for writing to an underlying buffer as well as reading from it. It however does not function correctly if you're mixing both read and write operations with each other.
 
+## Breaking Changes with 2.0
+The latest version (2.0+) is written in TypeScript, and are compiled to ES6 Javascript. This means the earliest Node.js it supports will be 4.x (in strict mode.) If you're using version 6 and above it will work without any issues. From an API standpoint, 2.0 is backwards compatible.
+
 ## Installing:
 
 `npm install smart-buffer`
