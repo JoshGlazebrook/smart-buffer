@@ -439,4 +439,5 @@ declare class SmartBuffer {
      */
     static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
 }
-export { SmartBufferOptions, SmartBuffer };
+
+export = SmartBuffer;
