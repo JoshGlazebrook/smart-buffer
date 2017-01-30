@@ -25,6 +25,8 @@ declare class SmartBuffer {
      *
      * @param size { Number } The size the underlying buffer instance should be instantiated to (defaults to 4096)
      * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
+     * 
+     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
      */
     constructor(size: number, encoding?: BufferEncoding);
 
@@ -32,6 +34,8 @@ declare class SmartBuffer {
      * Creates a new SmartBuffer instance
      *
      * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
+     * 
+     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
      */
     constructor(encoding?: BufferEncoding);
 
@@ -40,6 +44,8 @@ declare class SmartBuffer {
      *
      * @param buff { Buffer } An existing buffer instance to copy to this smart buffer instance
      * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
+     * 
+     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
      */
     constructor(buff: Buffer, encoding?: string);
 
@@ -47,6 +53,7 @@ declare class SmartBuffer {
      * Creates a new SmartBuffer instance
      * 
      * @param options { SmartBufferOptions } The SmartBufferOptions settings to use when creating the SmartBuffer instance.
+     * 
      */
     constructor(options: SmartBufferOptions);
 
