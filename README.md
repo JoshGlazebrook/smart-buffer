@@ -17,6 +17,10 @@ Key Features:
 * Built in TypeScript
 * Type Definitions Provided
 
+Requirements:
+* Node v4.0+ is supported at this time.  (Versions prior to 2.0 will work on node 0.10)
+
+
 #### Note:
 smart-buffer can be used for writing to an underlying buffer as well as reading from it. It however does not function correctly if you're mixing both read and write operations with each other.
 
