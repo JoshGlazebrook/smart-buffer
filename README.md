@@ -21,6 +21,8 @@ smart-buffer can be used for writing to an underlying buffer as well as reading 
 ## Installing:
 
 `npm install smart-buffer`
+or
+`yarn install smart-buffer`
 
 ## Using smart-buffer
 
@@ -34,7 +36,7 @@ To build this packet using the vanilla Buffer class, you would have to count up 
 
 ```javascript
 function createLoginPacket(username, password, age, country) {
-    var packet = new SmartBuffer();
+    let packet = new SmartBuffer();
     packet.writeUInt16LE(0x0060); // Login Packet Type/ID
     packet.writeStringNT(username);
     packet.writeStringNT(password);
@@ -47,7 +49,7 @@ function createLoginPacket(username, password, age, country) {
 ```
 With the above function, you now can do this:
 ```javascript
-var login = createLoginPacket("Josh", "secret123", 22, "United States");
+let login = createLoginPacket("Josh", "secret123", 22, "United States");
 
 // <Buffer 60 00 1e 00 4a 6f 73 68 00 73 65 63 72 65 74 31 32 33 00 16 55 6e 69 74 65 64 20 53 74 61 74 65 73 00>
 ```
@@ -56,9 +58,9 @@ Notice that the `[PacketLength:2]` part of the packet was inserted after we had 
 Reading back the packet we created above is just as easy:
 ```javascript
 
-var reader = new SmartBuffer(login);
+let reader = new SmartBuffer(login);
 
-var logininfo = {
+let logininfo = {
     packetType: reader.readUInt16LE(),
     packetLength: reader.readUInt16LE(),
     username: reader.readStringNT(),
