@@ -3,6 +3,7 @@ smart-buffer  [![Build Status](https://travis-ci.org/JoshGlazebrook/smart-buffer
 
 smart-buffer is a light Buffer wrapper that takes away the need to keep track of what position to read and write data to and from the underlying Buffer. It also adds null terminating string operations and **grows** as you add more data.
 
+![stats](https://nodei.co/npm/smart-buffer.png?downloads=true&downloadRank=true&stars=true "stats")
 
 ### What it's useful for:
 
