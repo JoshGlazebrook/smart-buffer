@@ -32,6 +32,11 @@ or
 
 `yarn install smart-buffer`
 
+Note: The published NPM package includes the built javascript library. 
+If you cloned this repo and wish to build the library manually use:
+
+`tsc -p ./`
+
 ## Using smart-buffer
 
 ### Example
