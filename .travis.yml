@@ -6,8 +6,8 @@ node_js:
   - stable
 
 before_script: 
-  - "npm install -g typescript"
-  - "tsc -p ./"
+  - npm install -g typescript
+  - tsc -p ./
 
 script: "npm run coverage"
 # Send coverage data to Coveralls
