@@ -1,6 +1,6 @@
 {
   "name": "smart-buffer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
   "main": "build/smartbuffer.js",
   "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
@@ -41,6 +41,7 @@
   "scripts": {
     "test": "mocha test/smartbuffer.test.js",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha recursive test",
-    "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test"
+    "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test",
+    "preinstall": "tsc -p ./"
   }
 }
