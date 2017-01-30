@@ -1,383 +1,435 @@
-// Type definitions for smart-buffer
-// Project: https://github.com/JoshGlazebrook/smart-buffer
-// Definitions by: Josh Glazebrook <https://github.com/JoshGlazebrook>
-
-
+/// <reference types="node" />
+/**
+ * Object interface for constructing new SmartBuffer instances.
+ */
+interface SmartBufferOptions {
+    encoding?: BufferEncoding;
+    size?: number;
+    buff?: Buffer;
+}
 
 declare class SmartBuffer {
+    private buff;
+    length: number;
+    encoding: BufferEncoding;
+    private writeOffset;
+    private readOffset;
+
     /**
-     * Creates a new SmartBuffer instance (defaults to utf8 encoding)
+     * Creates a new SmartBuffer instance (defaults to utf8 encoding, 4096 internal Buffer size)
      */
     constructor();
 
     /**
      * Creates a new SmartBuffer instance
      *
-     * @param arg1 { Number } The size the underlying buffer instance should be instantiated to (defaults to 4096)
-     * @param arg2 { String } The string encoding to use for reading/writing strings (defaults to utf8)
+     * @param size { Number } The size the underlying buffer instance should be instantiated to (defaults to 4096)
+     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
      */
-    constructor(size: number, encoding?: string);
+    constructor(size: number, encoding?: BufferEncoding);
 
     /**
      * Creates a new SmartBuffer instance
      *
-     * @param arg1 { String } The string encoding to use for reading/writing strings (defaults to utf8)
+     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
      */
-    constructor(encoding?: string);
+    constructor(encoding?: BufferEncoding);
 
     /**
      * Creates a new SmartBuffer instance
      *
-     * @param arg1 { Buffer } An existing buffer instance to copy to this smart buffer instance
-     * @param arg2 { String } The string encoding to use for reading/writing strings (defaults to utf8)
+     * @param buff { Buffer } An existing buffer instance to copy to this smart buffer instance
+     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
      */
-    constructor(buffer: Buffer, encoding?: string)
-
-
-
-    // Signed number readers
+    constructor(buff: Buffer, encoding?: string);
 
     /**
-     * Reads a 8-bit signed integer
+     * Creates a new SmartBuffer instance
+     * 
+     * @param options { SmartBufferOptions } The SmartBufferOptions settings to use when creating the SmartBuffer instance.
+     */
+    constructor(options: SmartBufferOptions);
+
+    /**
+     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
+     *
+     * @param size { Number } The size of the internal Buffer.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     *
+     * @return { SmartBuffer }
+     */
+    static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer;
+    /**
+     * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
+     *
+     * @param buffer { Buffer } The Buffer to use as the internal Buffer value.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     *
+     * @return { SmartBuffer }
+     */
+    static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer;
+    /**
+     * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
+     * 
+     * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
+     */
+    static fromOptions(options: SmartBufferOptions): SmartBuffer
+    /**
+     * Ensures that the internal Buffer is large enough to write data.
+     *
+     * @param minLength { Number } The minimum length of the data that needs to be written.
+     * @param offset { Number } The offset of the data to be written.
+     */
+    private ensureWriteable(minLength, offset?);
+    /**
+     * Ensures that the internal Buffer is large enough to write at least the given amount of data.
+     *
+     * @param minLength { Number } The minimum length of the data needs to be written.
+     */
+    private ensureCapacity(minLength);
+    /**
+     * Reads a numeric number value using the provided function.
+     *
+     * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes read.
+     *
+     * @param { Number }
+     */
+    private readNumberValue(func, byteSize);
+    /**
+     * Writes a numeric number value using the provided function.
+     *
+     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
+     * @param byteSize { Number } The numer of bytes written.
+     * @param value { Number } The number value to write.
+     * @param offset { Number } the offset to write the number at.
+     *
+     */
+    private writeNumberValue(func, byteSize, value, offset?);
+    /**
+     * Reads an Int8 value from the current read position.
+     *
+     * @return { Number }
      */
     readInt8(): number;
-
     /**
-     * Reads a 16-bit signed integer (big endian)
+     * Reads an Int16BE value from the current read position.
+     *
+     * @return { Number }
      */
     readInt16BE(): number;
-
     /**
-     * Reads a 16-bit signed integer (little endian)
+     * Reads an Int16LE value from the current read position.
+     *
+     * @return { Number }
      */
     readInt16LE(): number;
-
     /**
-     * Reads a 32-bit signed integer (big endian)
+     * Reads an Int32BE value from the current read position.
+     *
+     * @return { Number }
      */
     readInt32BE(): number;
-
     /**
-     * Reads a 32-bit signed integer (little endian)
+     * Reads an Int32LE value from the current read position.
+     *
+     * @return { Number }
      */
     readInt32LE(): number;
-
-    // Unsigned number readers
-
     /**
-     * Reads a 8-bit unsigned integer
+     * Writes an Int8 value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeInt8(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an Int16BE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeInt16BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an Int16LE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeInt16LE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an Int32BE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeInt32BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an Int32LE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeInt32LE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Reads an UInt8 value from the current read position.
+     *
+     * @return { Number }
      */
     readUInt8(): number;
-
     /**
-     * Reads a 16-bit unsigned integer (big endian)
+     * Reads an UInt16BE value from the current read position.
+     *
+     * @return { Number }
      */
     readUInt16BE(): number;
-
     /**
-     * Reads a 16-bit unsigned integer (little endian)
+     * Reads an UInt16LE value from the current read position.
+     *
+     * @return { Number }
      */
     readUInt16LE(): number;
-
     /**
-     * Reads a 32-bit unsigned integer (big endian)
+     * Reads an UInt32BE value from the current read position.
+     *
+     * @return { Number }
      */
     readUInt32BE(): number;
-
     /**
-     * Reads a 32-bit unsigned integer (little endian)
+     * Reads an UInt32LE value from the current read position.
+     *
+     * @return { Number }
      */
     readUInt32LE(): number;
-
-    // Floating point readers
-
     /**
-     * Reads a float (big endian)
+     * Writes an UInt8 value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeUInt8(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an UInt16BE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeUInt16BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an UInt16LE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeUInt16LE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an UInt32BE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeUInt32BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes an UInt32LE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeUInt32LE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Reads an FloatBE value from the current read position.
+     *
+     * @return { Number }
      */
     readFloatBE(): number;
-
     /**
-     * Reads a float (little endian)
+     * Reads an FloatLE value from the current read position.
+     *
+     * @return { Number }
      */
     readFloatLE(): number;
-
     /**
-     * Reads a double (big endian)
+     * Writes a FloatBE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeFloatBE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Writes a FloatLE value to the current write position (or at optional offset).
+     *
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
+     *
+     * @return this
+     */
+    writeFloatLE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Reads an DoublEBE value from the current read position.
+     *
+     * @return { Number }
      */
     readDoubleBE(): number;
-
     /**
-     * Reads a double (little endian)
+     * Reads an DoubleLE value from the current read position.
+     *
+     * @return { Number }
      */
     readDoubleLE(): number;
-
-    // String readers
-
     /**
-     * Reads a string
+     * Writes a DoubleBE value to the current write position (or at optional offset).
      *
-     * @param length { Number } The length of the string to read
-     * @param encoding { Number} The encoding to use (defaults to instance level encoding)
-     */
-    readString(length?: number, encoding?: string): string;
-
-    /**
-     * Reads a null terminated string
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
      *
-     * @param encoding The encoding to use (defaults to instance level encoding)
+     * @return this
      */
-    readStringNT(encoding?: string): string;
-
-    // Buffer readers
-
+    writeDoubleBE(value: number, offset?: number): SmartBuffer;
     /**
-     * Reads binary data into a Buffer
+     * Writes a DoubleLE value to the current write position (or at optional offset).
      *
-     * @param len { Number } The amount of data to read
-     */
-    readBuffer(len?: number): Buffer;
-
-    /**
-     * Reads null terminated binary data into a Buffer
-     */
-    readBufferNT(): Buffer;
-
-
-    // Signed number writers
-
-    /**
-     * Writes a 8-bit signed integer value
+     * @param value { Number } The value to write.
+     * @param offset { Number } The offset to write the value at.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @return this
      */
-    writeInt8(value: number, offset?: number): this;
-
+    writeDoubleLE(value: number, offset?: number): SmartBuffer;
     /**
-     * Writes a 16-bit signed integer (big endian) value
+     * Reads a String from the current read position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param length { Number } The number of bytes to read as a String.
+     * @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
+     *
+     * @return { String }
      */
-    writeInt16BE(value: number, offset?: number): this;
-
+    readString(length?: number, encoding?: BufferEncoding): string;
     /**
-     * Writes a 16-bit signed integer (little endian) value
+     * Writes a String to the current write position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param value { String } The String value to write.
+     * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
+     * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
      */
-    writeInt16LE(value: number, offset?: number): this;
-
+    writeString(value: string, arg2?: number | BufferEncoding, encoding?: BufferEncoding): this;
     /**
-     * Writes a 32-bit signed integer (big endian) value
+     * Reads a null-terminated String from the current read position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
+     *
+     * @return { String }
      */
-    writeInt32BE(value: number, offset?: number): this;
-
+    readStringNT(encoding?: BufferEncoding): string;
     /**
-     * Writes a 32-bit signed integer (little endian) value
+     * Writes a null-terminated String to the current write position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param value { String } The String value to write.
+     * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
+     * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
      */
-    writeInt32LE(value: number, offset?: number): this;
-
-    // Unsigned number writers
-
+    writeStringNT(value: string, offset?: number | BufferEncoding, encoding?: BufferEncoding): void;
     /**
-     * Writes a 8-bit unsigned integer value
+     * Reads a Buffer from the internal read position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param length { Number } The length of data to read as a Buffer.
+     *
+     * @return { Buffer }
      */
-    writeUInt8(value: number, offset?: number): this;
-
+    readBuffer(length?: number): Buffer;
     /**
-     * Writes a 16-bit unsigned integer (big endian) value
+     * Writes a Buffer to the current write position.
      *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeUInt16BE(value: number, offset?: number): this;
-
-    /**
-     * Writes a 16-bit unsigned integer (little endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeUInt16LE(value: number, offset?: number): this;
-
-    /**
-     * Writes a 32-bit unsigned integer (big endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeUInt32BE(value: number, offset?: number): this;
-
-    /**
-     * Writes a 32-bit unsigned integer (little endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeUInt32LE(value: number, offset?: number): this;
-
-    // Floating point writers
-
-    /**
-     * Writes a float (big endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeFloatBE(value: number, offset?: number): this;
-
-    /**
-     * Writes a float (little endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeFloatLE(value: number, offset?: number): this;
-
-    /**
-     * Writes a double (big endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeDoubleBE(value: number, offset?: number): this;
-
-    /**
-     * Writes a double (little endian) value
-     *
-     * @param value { Number } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    writeDoubleLE(value: number, offset?: number): this;
-
-    // String writers
-
-    /**
-     * Writes a string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    /**
-     * Writes a string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { String } The encoding to use when writing the string (defaults to instance level encoding)
-     */
-    /**
-     * Writes a string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     * @param encoding { String } The encoding to use when writing the string (defaults to instance level encoding)
-     */
-    writeString(value: string, offset?: number | string, encoding?: string): this;
-
-    /**
-     * Writes a null terminated string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     */
-    /**
-     * Writes a null terminated string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { String } The encoding to use when writing the string (defaults to instance level encoding)
-     */
-    /**
-     * Writes a null terminated string
-     *
-     * @param value { String } The value to write to the buffer
-     * @param offset { Number } The offset position to write the value to
-     * @param encoding { String } The encoding to use when writing the string (defaults to instance level encoding)
-     */
-    writeStringNT(value: string, offset?: number | string, encoding?: string): this;
-
-    // Buffer writers
-
-    /**
-     * Writes a Buffer
-     *
-     * @param value { Buffer } The Buffer to write to the smart buffer
-     * @param offset { Number } The offset position to write the value to
+     * @param value { Buffer } The Buffer to write.
+     * @param offset { Number } The offset to write the Buffer to.
      */
     writeBuffer(value: Buffer, offset?: number): this;
-
     /**
-     * Writes a Buffer with null termination
+     * Reads a null-terminated Buffer from the current read poisiton.
      *
-     * @param value { Buffer } The buffer to write to the smart buffer
-     * @param offset { Number } The offset position to write the value to
+     * @return { Buffer }
+     */
+    readBufferNT(): Buffer;
+    /**
+     * Writes a null-terminated Buffer to the current write position.
+     *
+     * @param value { Buffer } The Buffer to write.
+     * @param offset { Number } The offset to write the Buffer to.
      */
     writeBufferNT(value: Buffer, offset?: number): this;
-
-
-    // Misc Functions
-
     /**
-     * Clears the smart buffer
+     * Clears the SmartBuffer instance to its original empty state.
      */
-    clear();
-
+    clear(): void;
     /**
-     * Gets the number of bytes that remain to be read
+     * Gets the remaining data left to be read from the SmartBuffer instance.
+     *
+     * @return { Number }
      */
     remaining(): number;
-
     /**
-     * Increases the read offset position
+     * Moves the read offset forward.
      *
-     * @param amount { Number } The amount to increase the read offset position by
+     * @param amount { Number } The amount to move the read offset forward by.
      */
-    skip(amount: number);
-
+    skip(amount: number): void;
     /**
-     * Changes the read offset position
+     * Moves the read offset backwards.
      *
-     * @param position { Number } The position to change the read offset to
+     * @param amount { Number } The amount to move the read offset backwards by.
      */
-    skipTo(position: number);
-
+    rewind(amount: number): void;
     /**
-     * Decreases the read offset position
+     * Moves the read offset to a specific position.
      *
-     * @param amount { Number } The amount to decrease the read offset position by
+     * @param position { Number } The position to move the read offset to.
      */
-    rewind(amount: number);
-
+    skipTo(position: number): void;
     /**
-     * Gets the underlying Buffer instance
+     * Moves the read offset to a specific position.
+     *
+     * @param position { Number } The position to move the read offset to.
+     */
+    moveTo(position: number): void;
+    /**
+     * Gets the value of the internal managed Buffer
+     *
+     * @param { Buffer }
      */
     toBuffer(): Buffer;
-
     /**
-     * Gets the string representation of the underlying Buffer
+     * Gets the String value of the internal managed Buffer
      *
-     * @param encoding { String } The encoding to use (defaults to instance level encoding)
+     * @param encoding { String } The BufferEncoding to display the Buffer as (defaults to instance level encoding).
      */
-    toString(encoding?: string): string;
-
+    toString(encoding?: BufferEncoding): string;
     /**
-     * Destroys the smart buffer instance
+     * Destroys the SmartBuffer instance.
      */
-    destroy();
-
+    destroy(): void;
     /**
-     * Gets the current length of the smart buffer instance
+     * Type checking function that determines if an object is a SmartBufferOptions object.
      */
-    length: number;
+    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
 }
-
-export = SmartBuffer;
+export { SmartBufferOptions, SmartBuffer };

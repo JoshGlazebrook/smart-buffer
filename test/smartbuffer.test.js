@@ -1,6 +1,5 @@
-var SmartBuffer = require('../lib/smart-buffer.js');
+var SmartBuffer = require('../build/smartbuffer');
 var assert = require('chai').assert;
-
 
 describe('Constructing a SmartBuffer', function () {
     describe('Constructing with an existing Buffer', function () {
@@ -53,6 +52,58 @@ describe('Constructing a SmartBuffer', function () {
 
     });
 
+    describe('Constructing with SmartBufferOptions', function () {
+        var validOptions1 = {
+            size: 1024,
+            encoding: 'ascii'
+        };
+
+        var validOptions2 = {
+            buff: Buffer.alloc(1024)
+        }
+
+        var invalidOptions1 = {
+            encoding: 'invalid'
+        };
+
+        var invalidOptions2 = {
+            size: -1
+        };
+
+        var invalidOptions3 = {
+            buff: 'notabuffer'
+        };
+
+        it('should create a SmartBuffer with size 1024 and ascii encoding', function () {
+            var sbuff = new SmartBuffer(validOptions1);
+            assert.strictEqual(sbuff.encoding, validOptions1.encoding);
+            assert.strictEqual(sbuff.buff.length, validOptions1.size);
+        });
+
+        it('should create a SmartBuffer with the provided buffer as the initial value', function () {
+            var sbuff = new SmartBuffer(validOptions2);
+            assert.deepEqual(sbuff.buff, validOptions2.buff);
+        })
+
+        it('should throw an error when given an options object with an invalid encoding', function () {
+            assert.throws(function() {
+                var sbuff = new SmartBuffer(invalidOptions1);
+            });
+        });
+
+        it('should throw an error when given an options object with an invalid size', function () {
+            assert.throws(function() {
+                var sbuff = new SmartBuffer(invalidOptions2);
+            });
+        });
+
+        it('should throw an error when given an options object with an invalid buffer', function () {
+            assert.throws(function() {
+                var sbuff = new SmartBuffer(invalidOptions3);
+            });
+        });
+    });
+
     describe('Constructing with invalid parameters', function () {
         it('should throw an exception when given an invalid number size', function () {
             assert.throws(function () {
@@ -73,7 +124,7 @@ describe('Constructing a SmartBuffer', function () {
         it('should throw and exception when given an object that is not a Buffer', function () {
             assert.throws(function () {
                 var reader = new SmartBuffer(null);
-            }, TypeError);
+            }, Error);
         });
     });
 });
@@ -100,8 +151,10 @@ describe('Reading/Writing To/From SmartBuffer', function () {
         reader.writeFloatLE(1.234);
         reader.writeDoubleBE(1.234567890);
         reader.writeDoubleLE(1.234567890);
+        reader.writeUInt8(200, 0);
 
         it('should equal the correct values that were written above', function () {
+            assert.strictEqual(reader.readUInt8(), 200);
             assert.strictEqual(reader.readInt8(), 0x44);
             assert.strictEqual(reader.readUInt8(), 0xFF);
             assert.strictEqual(reader.readInt16BE(), 0x6699);
@@ -125,8 +178,10 @@ describe('Reading/Writing To/From SmartBuffer', function () {
         reader.writeStringNT('hello');
         reader.writeString('world');
         reader.writeStringNT('✎✏✎✏✎✏');
+        reader.writeStringNT('first', 0);
 
-        it('should equal the correct strings that were written above', function () {
+        it('should equal the correct strings that were written prior', function () {
+            assert.strictEqual(reader.readStringNT(), 'first');
             assert.strictEqual(reader.readStringNT(), 'hello');
             assert.strictEqual(reader.readString(5), 'world');
             assert.strictEqual(reader.readStringNT(), '✎✏✎✏✎✏');
@@ -137,12 +192,28 @@ describe('Reading/Writing To/From SmartBuffer', function () {
         var reader = new SmartBuffer('ascii');
         reader.writeStringNT('some ascii text');
         reader.writeStringNT('ѕσмє υтƒ8 тєχт', 'utf8');
+        reader.writeStringNT('first', 0, 'ascii');
 
         it('should equal the correct strings that were written above', function () {
+            assert.strictEqual(reader.readStringNT(), 'first');
             assert.strictEqual(reader.readStringNT(), 'some ascii text');
             assert.strictEqual(reader.readStringNT('utf8'), 'ѕσмє υтƒ8 тєχт');
         });
+
+        it('should throw an error when an invalid encoding is provided', function() {
+            assert.throws(function() {
+                reader.writeString('hello', 'invalid');
+            });
+        })
+
+        it('should throw an error when an invalid encoding is provided along with a valid offset', function () {
+            assert.throws(function() {
+                reader.writeString('hellothere', 2, 'invalid');
+            });
+        })
     });
+
+    
 
     describe('Null/non-null terminating strings', function () {
         var reader = new SmartBuffer();
@@ -211,11 +282,8 @@ describe('Reading/Writing To/From SmartBuffer', function () {
             buff.writeStringNT('hello');
             buff.writeBufferNT(frontBuff, 0);
 
-            console.log(buff);
-
             it('should write the buffer to the front of the smart buffer instance', function () {
                 var readBuff = buff.readBufferNT();
-                console.log(readBuff);
                 assert.deepEqual(readBuff, frontBuff);
             });
         });
@@ -392,6 +460,12 @@ describe('Displaying the buffer as a string', function () {
     it('Should return a valid base64 string representing the internal buffer', function () {
         assert.strictEqual(str64, sbuff.toString('base64'));
     });
+
+    it('Should throw an error if an invalid encoding is provided', function () {
+        assert.throws(function() {
+            var strError = sbuff.toString('invalidEncoding');
+        });
+    })
 });
 
 describe('Destroying the buffer', function () {
@@ -406,5 +480,35 @@ describe('Destroying the buffer', function () {
 
     it('Should have no internal buff property when buffer is destroyed', function () {
         assert.notProperty(writer, 'buff');
+    });
+});
+
+describe('ensureWritable()', function () {
+    var sbuff = new SmartBuffer(10);
+
+    it('should increase the internal buffer size to accomodate given size.', function () {
+        sbuff.ensureWriteable(100);
+
+        assert.strictEqual(sbuff.buff.length >= 100, true);
+    });
+});
+
+describe('isSmartBufferOptions()', function () {
+    it('should return true when encoding is defined', function () {
+        assert.strictEqual(SmartBuffer.isSmartBufferOptions({
+            encoding: 'utf8'
+        }), true);
+    });
+
+    it('should return true when size is defined', function () {
+        assert.strictEqual(SmartBuffer.isSmartBufferOptions({
+            size: 1024
+        }), true);
+    });
+
+    it('should return true when buff is defined', function () {
+        assert.strictEqual(SmartBuffer.isSmartBufferOptions({
+            buff: Buffer.alloc(4096)
+        }), true);
     });
 });

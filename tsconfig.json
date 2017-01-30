@@ -1,0 +1,23 @@
+{
+   "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "outDir": "build",
+        "watch": false,
+        "declaration": false,
+        "removeComments":false,
+        "noImplicitAny": true,
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "exclude": [
+      "node_modules",
+      ".idea",
+      "build",
+      "typings"
+    ]
+}
