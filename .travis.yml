@@ -5,7 +5,7 @@ node_js:
   - 7
   - stable
 
-before_script: tsc
+before_script: tsc -p ./
 
 script: "npm run coverage"
 # Send coverage data to Coveralls
