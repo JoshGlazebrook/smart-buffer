@@ -14,6 +14,8 @@ Key Features:
 * Grows the internal Buffer as you add data to it. 
 * Useful string operations. (Null terminating strings)
 * Allows for inserting values at specific points in the internal Buffer.
+* Built in TypeScript
+* Type Definitions Provided
 
 #### Note:
 smart-buffer can be used for writing to an underlying buffer as well as reading from it. It however does not function correctly if you're mixing both read and write operations with each other.
@@ -21,7 +23,9 @@ smart-buffer can be used for writing to an underlying buffer as well as reading 
 ## Installing:
 
 `npm install smart-buffer`
+
 or
+
 `yarn install smart-buffer`
 
 ## Using smart-buffer
@@ -85,20 +89,43 @@ let logininfo = {
 
 ### Constructing a smart-buffer
 
-smart-buffer has a few different constructor signatures you can use. By default, utf8 encoding is used, and the internal Buffer length will be 4096. When reading from a Buffer, smart-buffer does NOT make a copy of the Buffer. It reads from the Buffer it was given.
+smart-buffer has a few different ways to construct an instance. In versions prior to 2.0, there are multiple constructor patterns which are documented here. In versions 2.0 and beyond, it's preferred to use the factory methods or the single options object constructor.
 
 ```javascript
-var SmartBuffer = require('smart-buffer');
+let SmartBuffer = require('smart-buffer');
 
-// Reading from an existing Buffer:
-var reader = new SmartBuffer(buffer);
-var reader = new SmartBuffer(buffer, 'ascii');
+// Creating SmartBuffer from existing Buffer
+let buff = SmartBuffer.fromBuffer(buffer); // Creates instance from buffer. (Uses default utf8 encoding)
+let buff = SmartBuffer.fromBuffer(buffer, 'ascii'); // Creates instance from buffer with ascii encoding for Strings. 
 
-// Writing to a new Buffer:
-var writer = new SmartBuffer();               // Defaults to utf8, 4096 length internal Buffer.
-var writer = new SmartBuffer(1024);           // Defaults to utf8, 1024 length internal Buffer.
-var writer = new SmartBuffer('ascii');         // Sets to ascii encoding, 4096 length internal buffer.
-var writer = new SmartBuffer(1024, 'ascii');  // Sets to ascii encoding, 1024 length internal buffer.
+// Creating SmartBuffer with specified internal Buffer size.
+let buff = SmartBuffer.fromSize(1024); // Creates instance with internal Buffer size of 1024.
+let buff = SmartBuffer.fromSize(1024, 'utf8'); // Creates instance with intenral Buffer size of 1024, and utf8 encoding. 
+
+// Creating SmartBuffer with options object. This one specifies size and encoding.
+let buff = SmartBuffer.fromOptions({
+    size: 1024,
+    encoding: 'ascii'
+});
+
+// Creating SmartBuffer with options object. This one specified an existing Buffer.
+let buff = SmartBuffer.fromOptions({
+    buff: buffer
+});
+
+// Just want a regular SmartBuffer with all default options?
+let buff = new SmartBuffer();
+```
+
+## Backwards Compatibility:
+
+All constructors used prior to 2.0 still are supported. However it's not recommended to use these.
+
+```javascript
+let writer = new SmartBuffer();               // Defaults to utf8, 4096 length internal Buffer.
+let writer = new SmartBuffer(1024);           // Defaults to utf8, 1024 length internal Buffer.
+let writer = new SmartBuffer('ascii');         // Sets to ascii encoding, 4096 length internal buffer.
+let writer = new SmartBuffer(1024, 'ascii');  // Sets to ascii encoding, 1024 length internal buffer.
 ```
 
 ## Reading Data
@@ -126,8 +153,8 @@ Supported Operations:
 * readDoubleLE
 
 ```javascript
-var reader = new SmartBuffer(somebuffer);
-var num = reader.readInt8();
+let reader = new SmartBuffer(somebuffer);
+let num = reader.readInt8();
 ```
 
 ## Reading String Values
@@ -135,15 +162,15 @@ var num = reader.readInt8();
 When reading String values, you can either choose to read a null terminated string, or a string of a specified length.
 
 ### SmartBuffer.readStringNT( [encoding] )
-> `String` **String encoding to use**  - Defaults to the encoding set in the constructor, or utf8. 
+> `String` **String encoding to use**  - Defaults to the encoding set in the constructor. 
 
 returns `String`
 
 > Note: When readStringNT is called and there is no null character found, smart-buffer will read to the end of the internal Buffer.
 
-### SmartBuffer.readString( [length], [encoding] )
 ### SmartBuffer.readString( [length] )
 ### SmartBuffer.readString( [encoding] )
+### SmartBuffer.readString( [length], [encoding] )
 > `Number` **Length of the string to read**
 
 > `String` **String encoding to use** - Defaults to the encoding set in the constructor, or utf8.
@@ -276,7 +303,7 @@ Rewinds the read position backwards by the given value.
 
 returns this
 
-### SmartBuffer.skipTo( position )
+### SmartBuffer.moveTo( position )
 > `Number` **The point to skip the read position to**
 
 Moves the read position to the given point.
@@ -292,11 +319,6 @@ returns `Buffer` A Buffer containing the contents of the internal Buffer.
 > `String` **The String encoding to use** - Defaults to the encoding set in the constructor, or utf8.
 
 returns `String` The internal Buffer in String representation.
-
-### SmartBuffer.destroy()
-Attempts to destroy the smart-buffer.
-
-returns this
 
 ## Properties
 
