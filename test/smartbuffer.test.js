@@ -139,7 +139,7 @@ describe('Constructing a SmartBuffer', function () {
     });
 
     describe('Constructing with factory methods', function () {
-        let originalBuffer = new Buffer(10);
+        var originalBuffer = new Buffer(10);
 
         var sbuff1 = SmartBuffer.fromBuffer(originalBuffer);
 
