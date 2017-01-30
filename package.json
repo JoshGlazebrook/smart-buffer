@@ -1,6 +1,6 @@
 {
   "name": "smart-buffer",
-  "version": "1.1.0-beta",
+  "version": "1.1.0",
   "description": "A smarter Buffer that keeps track of its own read and write positions while growing endlessly.",
   "main": "build/smartbuffer.js",
   "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
