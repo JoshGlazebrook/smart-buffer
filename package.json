@@ -42,6 +42,6 @@
     "test": "mocha test/smartbuffer.test.js",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha recursive test",
     "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test",
-    "prepublish": "npm install -g tsc && tsc -p ./"
+    "prepublish": "npm install -g typescript && tsc -p ./"
   }
 }
