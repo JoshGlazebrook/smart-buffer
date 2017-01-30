@@ -72,16 +72,16 @@ class SmartBuffer {
                 } else {
                     throw new Error('Invalid size provided. Size must be a valid integer greater than zero.');
                 }
-            }
-
-            // Checks for buffer
-            if (arg1.buff) {
+                // Check for initial Buffer
+            } else if (arg1.buff) {
                 if (arg1.buff instanceof Buffer) {
                     this.buff = arg1.buff;
                     this.length = arg1.buff.length;
                 } else {
                     throw new Error('Invalid buffer provided in SmartBufferOptions.');
                 }
+            } else {
+                this.buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
             }
         } else if (typeof arg1 === 'object') {
             throw new Error('Invalid object supplied to SmartBuffer constructor.');

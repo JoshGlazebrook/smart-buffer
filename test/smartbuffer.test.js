@@ -62,6 +62,10 @@ describe('Constructing a SmartBuffer', function () {
             buff: Buffer.alloc(1024)
         }
 
+        var validOptions3 = {
+            encoding: 'utf8'
+        };
+
         var invalidOptions1 = {
             encoding: 'invalid'
         };
@@ -83,6 +87,12 @@ describe('Constructing a SmartBuffer', function () {
         it('should create a SmartBuffer with the provided buffer as the initial value', function () {
             var sbuff = new SmartBuffer(validOptions2);
             assert.deepEqual(sbuff.buff, validOptions2.buff);
+        });
+
+        it('should create a SmartBuffer with the provided ascii encoding, and create a default buffer size', function () {
+            var sbuff = new SmartBuffer(validOptions3);
+            assert.strictEqual(sbuff.encoding, validOptions3.encoding);
+            assert.strictEqual(sbuff.buff.length, 4096);
         })
 
         it('should throw an error when given an options object with an invalid encoding', function () {
@@ -126,6 +136,36 @@ describe('Constructing a SmartBuffer', function () {
                 var reader = new SmartBuffer(null);
             }, Error);
         });
+    });
+
+    describe('Constructing with factory methods', function () {
+        let originalBuffer = new Buffer(10);
+
+        var sbuff1 = SmartBuffer.fromBuffer(originalBuffer);
+
+        it('Should create a SmartBuffer with a provided internal Buffer as the initial value', function () {
+            assert.deepEqual(sbuff1.buff,originalBuffer);
+        });
+
+        var sbuff2 = SmartBuffer.fromSize(1024);
+
+        it('Should create a SmartBuffer with a set provided initial Buffer size', function () {
+            assert.strictEqual(sbuff2.buff.length, 1024);
+        });
+
+        var options = {
+            size: 1024,
+            encoding: 'ascii'
+        };
+
+        var sbuff3 = SmartBuffer.fromOptions(options);
+
+        it('Should create a SmartBuffer instance with a given SmartBufferOptions object', function () {
+            assert.strictEqual(sbuff3.encoding, options.encoding);
+            assert.strictEqual(sbuff3.buff.length, options.size);
+        });
+
+
     });
 });
 
