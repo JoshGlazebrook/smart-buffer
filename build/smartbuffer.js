@@ -712,7 +712,6 @@ class SmartBuffer {
      * Destroys the SmartBuffer instance.
      */
     destroy() {
-        delete this.buff;
         this.clear();
     }
     /**

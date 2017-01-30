@@ -14,7 +14,7 @@ interface SmartBufferOptions {
 // The default Buffer size if one is not provided.
 const DEFAULT_SMARTBUFFER_SIZE = 4096;
 
-// The default string encoding to use for reading/writing strings.
+// The default string encoding to use for reading/writing strings. 
 const DEFAULT_SMARTBUFFER_ENCODING = 'utf8';
 
 class SmartBuffer {
@@ -202,7 +202,7 @@ class SmartBuffer {
      * Writes a numeric number value using the provided function.
      * 
      * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
-     * @param byteSize { Number } The numer of bytes written.
+     * @param byteSize { Number } The number of bytes written.
      * @param value { Number } The number value to write.
      * @param offset { Number } the offset to write the number at.
      * 
@@ -820,7 +820,6 @@ class SmartBuffer {
      * Destroys the SmartBuffer instance.
      */
     destroy() {
-        delete this.buff;
         this.clear();
     }
 

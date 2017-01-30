@@ -517,10 +517,6 @@ describe('Destroying the buffer', function () {
     it('Should have a length of zero when buffer is destroyed', function () {
         assert.strictEqual(0, writer.length);
     });
-
-    it('Should have no internal buff property when buffer is destroyed', function () {
-        assert.notProperty(writer, 'buff');
-    });
 });
 
 describe('ensureWritable()', function () {
