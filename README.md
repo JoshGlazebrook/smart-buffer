@@ -62,7 +62,7 @@ Notice that the `[PacketLength:2]` part of the packet was inserted after we had 
 Reading back the packet we created above is just as easy:
 ```javascript
 
-let reader = new SmartBuffer(login);
+let reader = SmartBuffer.fromBuffer(login);
 
 let logininfo = {
     packetType: reader.readUInt16LE(),
