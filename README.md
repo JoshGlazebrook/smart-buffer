@@ -89,7 +89,7 @@ let logininfo = {
 
 ### Constructing a smart-buffer
 
-smart-buffer has a few different ways to construct an instance. In versions prior to 2.0, there are multiple constructor patterns which are documented here. In versions 2.0 and beyond, it's preferred to use the factory methods or the single options object constructor.
+smart-buffer has a few different ways to construct an instance. Starting with version 2.0, the following factory methods are preffered.
 
 ```javascript
 let SmartBuffer = require('smart-buffer');
