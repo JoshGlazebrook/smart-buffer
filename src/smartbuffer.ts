@@ -833,5 +833,7 @@ class SmartBuffer {
     }
 }
 
-
-export = SmartBuffer;
+export {
+    SmartBufferOptions,
+    SmartBuffer
+};

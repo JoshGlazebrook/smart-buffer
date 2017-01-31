@@ -26,7 +26,7 @@ Requirements:
 smart-buffer can be used for writing to an underlying buffer as well as reading from it. It however does not function correctly if you're mixing both read and write operations with each other.
 
 ## Breaking Changes with 2.0
-The latest version (2.0+) is written in TypeScript, and are compiled to ES6 Javascript. This means the earliest Node.js it supports will be 4.x (in strict mode.) If you're using version 6 and above it will work without any issues. From an API standpoint, 2.0 is backwards compatible.
+The latest version (2.0+) is written in TypeScript, and are compiled to ES6 Javascript. This means the earliest Node.js it supports will be 4.x (in strict mode.) If you're using version 6 and above it will work without any issues. From an API standpoint, 2.0 is backwards compatible. The only difference is SmartBuffer is not exported directly as the root module.
 
 ## Installing:
 
@@ -52,6 +52,12 @@ Say you were building a packet that had to conform to the following protocol:
 To build this packet using the vanilla Buffer class, you would have to count up the length of the data payload beforehand. You would also need to keep track of the current "cursor" position in your Buffer so you write everything in the right places. With smart-buffer you don't have to do either of those things.
 
 ```javascript
+// 1.x
+var SmartBuffer = require('smart-buffer');
+
+// 2.x
+const SmartBuffer = require('smart-buffer').SmartBuffer;
+
 function createLoginPacket(username, password, age, country) {
     let packet = new SmartBuffer();
     packet.writeUInt16LE(0x0060); // Login Packet Type/ID
