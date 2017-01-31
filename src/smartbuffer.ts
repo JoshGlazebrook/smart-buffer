@@ -749,6 +749,16 @@ class SmartBuffer {
         this.clear();
     }
 
+    /**
+     * Ensures that the internal Buffer is large enough to read data.
+     *
+     * @param length { Number } The length of the data that needs to be read.
+     */
+    ensureReadable(length) {
+        if (this.remaining() < length) {
+        	throw new Error('Reading beyond the bounds of the data.');
+        }
+    }
         /**
      * Ensures that the internal Buffer is large enough to write data.
      * 
@@ -800,6 +810,7 @@ class SmartBuffer {
      * @param { Number }
      */
     private readNumberValue(func: (offset: number) => number, byteSize: number) {
+        this.ensureReadable(byteSize);
         // Call Buffer.readXXXX();
         const value = func.call(this.buff, this.readOffset);
 
