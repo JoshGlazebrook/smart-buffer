@@ -34,7 +34,7 @@ The latest version (2.0+) is written in TypeScript, and are compiled to ES6 Java
 
 or
 
-`yarn install smart-buffer`
+`yarn add smart-buffer`
 
 Note: The published NPM package includes the built javascript library. 
 If you cloned this repo and wish to build the library manually use:
