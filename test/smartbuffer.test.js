@@ -1,4 +1,4 @@
-var SmartBuffer = require('../build/smartbuffer');
+var SmartBuffer = require('../build/smartbuffer').SmartBuffer;
 var assert = require('chai').assert;
 
 describe('Constructing a SmartBuffer', function () {
