@@ -9,11 +9,40 @@ interface SmartBufferOptions {
 }
 
 declare class SmartBuffer {
-    private buff;
     length: number;
     encoding: BufferEncoding;
+    private buff;
     private writeOffset;
     private readOffset;
+
+    /**
+     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
+     *
+     * @param size { Number } The size of the internal Buffer.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     *
+     * @return { SmartBuffer }
+     */
+    static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer;
+    /**
+     * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
+     *
+     * @param buffer { Buffer } The Buffer to use as the internal Buffer value.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     *
+     * @return { SmartBuffer }
+     */
+    static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer;
+    /**
+     * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
+     * 
+     * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
+     */
+    static fromOptions(options: SmartBufferOptions): SmartBuffer
+    /**
+     * Type checking function that determines if an object is a SmartBufferOptions object.
+     */
+    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
 
     /**
      * Creates a new SmartBuffer instance (defaults to utf8 encoding, 4096 internal Buffer size)
@@ -57,52 +86,6 @@ declare class SmartBuffer {
      */
     constructor(options: SmartBufferOptions);
 
-    /**
-     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
-     *
-     * @param size { Number } The size of the internal Buffer.
-     * @param encoding { String } The BufferEncoding to use for strings.
-     *
-     * @return { SmartBuffer }
-     */
-    static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer;
-    /**
-     * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
-     *
-     * @param buffer { Buffer } The Buffer to use as the internal Buffer value.
-     * @param encoding { String } The BufferEncoding to use for strings.
-     *
-     * @return { SmartBuffer }
-     */
-    static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer;
-    /**
-     * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
-     * 
-     * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
-     */
-    static fromOptions(options: SmartBufferOptions): SmartBuffer
-    /**
-     * Ensures that the internal Buffer is large enough to write data.
-     *
-     * @param minLength { Number } The minimum length of the data that needs to be written.
-     * @param offset { Number } The offset of the data to be written.
-     */
-    private ensureWriteable(minLength, offset?);
-    /**
-     * Ensures that the internal Buffer is large enough to write at least the given amount of data.
-     *
-     * @param minLength { Number } The minimum length of the data needs to be written.
-     */
-    private ensureCapacity(minLength);
-    /**
-     * Reads a numeric number value using the provided function.
-     *
-     * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
-     * @param byteSize { Number } The number of bytes read.
-     *
-     * @param { Number }
-     */
-    private readNumberValue(func, byteSize);
     /**
      * Writes a numeric number value using the provided function.
      *
@@ -435,9 +418,27 @@ declare class SmartBuffer {
      */
     destroy(): void;
     /**
-     * Type checking function that determines if an object is a SmartBufferOptions object.
+     * Ensures that the internal Buffer is large enough to write data.
+     *
+     * @param minLength { Number } The minimum length of the data that needs to be written.
+     * @param offset { Number } The offset of the data to be written.
      */
-    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
+    private ensureWriteable(minLength, offset?);
+    /**
+     * Ensures that the internal Buffer is large enough to write at least the given amount of data.
+     *
+     * @param minLength { Number } The minimum length of the data needs to be written.
+     */
+    private ensureCapacity(minLength);
+    /**
+     * Reads a numeric number value using the provided function.
+     *
+     * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes read.
+     *
+     * @param { Number }
+     */
+    private readNumberValue(func, byteSize);
 }
 
 export {

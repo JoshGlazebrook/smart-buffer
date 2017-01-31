@@ -18,12 +18,60 @@ const DEFAULT_SMARTBUFFER_SIZE = 4096;
 const DEFAULT_SMARTBUFFER_ENCODING = 'utf8';
 
 class SmartBuffer {
-    private buff: Buffer;
     public length: number = 0;
     public encoding: BufferEncoding = DEFAULT_SMARTBUFFER_ENCODING;
 
+    private buff: Buffer;
     private writeOffset: number = 0;
     private readOffset: number = 0;
+
+    /**
+     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
+     * 
+     * @param size { Number } The size of the internal Buffer.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     * 
+     * @return { SmartBuffer }
+     */
+    public static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer {
+        return new this({
+            size: size,
+            encoding: encoding
+        });
+    }
+
+    /**
+     * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
+     * 
+     * @param buffer { Buffer } The Buffer to use as the internal Buffer value.
+     * @param encoding { String } The BufferEncoding to use for strings.
+     * 
+     * @return { SmartBuffer }
+     */
+    public static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer {
+        return new this({
+            buff: buff,
+            encoding: encoding
+        });
+    }
+
+    /**
+     * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
+     * 
+     * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
+     */
+    public static fromOptions(options: SmartBufferOptions): SmartBuffer {
+        return new this(options);
+    }
+
+    /**
+     * Type checking function that determines if an object is a SmartBufferOptions object.
+     */
+    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions {
+        const castOptions = (<SmartBufferOptions>options);
+
+        return castOptions && (castOptions.encoding !== undefined || castOptions.size !== undefined || castOptions.buff !== undefined);
+    }
 
 
     /**
@@ -98,128 +146,6 @@ class SmartBuffer {
             }
         }
     }
-
-    /**
-     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
-     * 
-     * @param size { Number } The size of the internal Buffer.
-     * @param encoding { String } The BufferEncoding to use for strings.
-     * 
-     * @return { SmartBuffer }
-     */
-    public static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer {
-        return new this({
-            size: size,
-            encoding: encoding
-        });
-    }
-
-    /**
-     * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
-     * 
-     * @param buffer { Buffer } The Buffer to use as the internal Buffer value.
-     * @param encoding { String } The BufferEncoding to use for strings.
-     * 
-     * @return { SmartBuffer }
-     */
-    public static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer {
-        return new this({
-            buff: buff,
-            encoding: encoding
-        });
-    }
-
-    /**
-     * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
-     * 
-     * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
-     */
-    public static fromOptions(options: SmartBufferOptions): SmartBuffer {
-        return new this(options);
-    }
-
-    /**
-     * Ensures that the internal Buffer is large enough to write data.
-     * 
-     * @param minLength { Number } The minimum length of the data that needs to be written.
-     * @param offset { Number } The offset of the data to be written.
-     */
-    private ensureWriteable(minLength: number, offset?: number) {
-        const offsetVal = typeof offset === 'number' ? offset : 0;
-
-        // Ensure there is enough internal Buffer capacity.
-        this.ensureCapacity(this.length + minLength + offsetVal);
-
-        // If offset is provided, copy data into appropriate location in regards to the offset.
-        if (typeof offset === 'number') {
-            this.buff.copy(this.buff, offsetVal + minLength, offsetVal, this.buff.length);
-        }
-
-        // Adjust instance length.
-        this.length = Math.max(this.length + minLength, offsetVal + minLength);
-    }
-
-
-    /**
-     * Ensures that the internal Buffer is large enough to write at least the given amount of data.
-     * 
-     * @param minLength { Number } The minimum length of the data needs to be written.
-     */
-    private ensureCapacity(minLength: number) {
-        const oldLength = this.buff.length;
-
-        if (minLength > oldLength) {
-            let data = this.buff;
-            let newLength = (oldLength * 3) / 2 + 1;
-            if (newLength < minLength) {
-                newLength = minLength;
-            }
-            this.buff = Buffer.allocUnsafe(newLength);
-
-            data.copy(this.buff, 0, 0, oldLength);
-        }
-    }
-
-    /**
-     * Reads a numeric number value using the provided function.
-     * 
-     * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
-     * @param byteSize { Number } The number of bytes read.
-     * 
-     * @param { Number }
-     */
-    private readNumberValue(func: (offset: number) => number, byteSize: number) {
-        // Call Buffer.readXXXX();
-        const value = func.call(this.buff, this.readOffset);
-
-        // Adjust internal read offset
-        this.readOffset += byteSize;
-
-        return value;
-    }
-
-    /**
-     * Writes a numeric number value using the provided function.
-     * 
-     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
-     * @param byteSize { Number } The number of bytes written.
-     * @param value { Number } The number value to write.
-     * @param offset { Number } the offset to write the number at.
-     * 
-     */
-    private writeNumberValue(func: (value: number, offset?: number) => number, byteSize: number, value: number, offset?: number) {
-        const offsetVal = typeof offset === 'number' ? offset : this.writeOffset;
-
-        // Ensure there is enough internal Buffer capacity. (raw offset is passed)
-        this.ensureWriteable(byteSize, offset);
-
-        // Call buffer.writeXXXX();
-        func.call(this.buff, value, offsetVal);
-
-        // Adjusts internal write offset
-        this.writeOffset += byteSize;
-    }
-
 
     // Signed integers
 
@@ -617,7 +543,7 @@ class SmartBuffer {
         let nullPos = this.length;
 
         // Find next null character (if one is not found, default from above is used)
-        for(let i = this.readOffset; i < this.length; i++) {
+        for (let i = this.readOffset; i < this.length; i++) {
             if (this.buff[i] === 0x00) {
                 nullPos = i;
                 break;
@@ -697,7 +623,7 @@ class SmartBuffer {
         let nullPos = this.length;
       
         // Find next null character (if one is not found, default from above is used)
-        for(let i = this.readOffset; i < this.length; i++) {
+        for (let i = this.readOffset; i < this.length; i++) {
             if (this.buff[i] === 0x00) {
                 nullPos = i;
                 break;
@@ -823,13 +749,86 @@ class SmartBuffer {
         this.clear();
     }
 
-    /**
-     * Type checking function that determines if an object is a SmartBufferOptions object.
+        /**
+     * Ensures that the internal Buffer is large enough to write data.
+     * 
+     * @param minLength { Number } The minimum length of the data that needs to be written.
+     * @param offset { Number } The offset of the data to be written.
      */
-    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions {
-        const castOptions = (<SmartBufferOptions>options);
+    private ensureWriteable(minLength: number, offset?: number) {
+        const offsetVal = typeof offset === 'number' ? offset : 0;
 
-        return castOptions && (castOptions.encoding !== undefined || castOptions.size !== undefined || castOptions.buff !== undefined);
+        // Ensure there is enough internal Buffer capacity.
+        this.ensureCapacity(this.length + minLength + offsetVal);
+
+        // If offset is provided, copy data into appropriate location in regards to the offset.
+        if (typeof offset === 'number') {
+            this.buff.copy(this.buff, offsetVal + minLength, offsetVal, this.buff.length);
+        }
+
+        // Adjust instance length.
+        this.length = Math.max(this.length + minLength, offsetVal + minLength);
+    }
+
+
+    /**
+     * Ensures that the internal Buffer is large enough to write at least the given amount of data.
+     * 
+     * @param minLength { Number } The minimum length of the data needs to be written.
+     */
+    private ensureCapacity(minLength: number) {
+        const oldLength = this.buff.length;
+
+        if (minLength > oldLength) {
+            let data = this.buff;
+            let newLength = (oldLength * 3) / 2 + 1;
+            if (newLength < minLength) {
+                newLength = minLength;
+            }
+            this.buff = Buffer.allocUnsafe(newLength);
+
+            data.copy(this.buff, 0, 0, oldLength);
+        }
+    }
+
+    /**
+     * Reads a numeric number value using the provided function.
+     * 
+     * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes read.
+     * 
+     * @param { Number }
+     */
+    private readNumberValue(func: (offset: number) => number, byteSize: number) {
+        // Call Buffer.readXXXX();
+        const value = func.call(this.buff, this.readOffset);
+
+        // Adjust internal read offset
+        this.readOffset += byteSize;
+
+        return value;
+    }
+
+    /**
+     * Writes a numeric number value using the provided function.
+     * 
+     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes written.
+     * @param value { Number } The number value to write.
+     * @param offset { Number } the offset to write the number at.
+     * 
+     */
+    private writeNumberValue(func: (value: number, offset?: number) => number, byteSize: number, value: number, offset?: number) {
+        const offsetVal = typeof offset === 'number' ? offset : this.writeOffset;
+
+        // Ensure there is enough internal Buffer capacity. (raw offset is passed)
+        this.ensureWriteable(byteSize, offset);
+
+        // Call buffer.writeXXXX();
+        func.call(this.buff, value, offsetVal);
+
+        // Adjusts internal write offset
+        this.writeOffset += byteSize;
     }
 }
 
