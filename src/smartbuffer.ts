@@ -754,7 +754,7 @@ class SmartBuffer {
      *
      * @param length { Number } The length of the data that needs to be read.
      */
-    ensureReadable(length) {
+    private ensureReadable(length: number) {
         if (this.remaining() < length) {
         	throw new Error('Reading beyond the bounds of the data.');
         }
