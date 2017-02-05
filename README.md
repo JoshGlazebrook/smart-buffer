@@ -62,7 +62,7 @@ import SmartBuffer = require('smart-buffer');
 const SmartBuffer = require('smart-buffer').SmartBuffer;
 
 // 2.x (typescript)
-import { SmartBuffer, SmartBufferOptions} from 'smart-buffer'latest
+import { SmartBuffer, SmartBufferOptions} from 'smart-buffer';
 
 function createLoginPacket(username, password, age, country) {
     let packet = new SmartBuffer();
