@@ -52,11 +52,17 @@ Say you were building a packet that had to conform to the following protocol:
 To build this packet using the vanilla Buffer class, you would have to count up the length of the data payload beforehand. You would also need to keep track of the current "cursor" position in your Buffer so you write everything in the right places. With smart-buffer you don't have to do either of those things.
 
 ```javascript
-// 1.x
+// 1.x (javascript)
 var SmartBuffer = require('smart-buffer');
 
-// 2.x
+// 1.x (typescript)
+import SmartBuffer = require('smart-buffer');
+
+// 2.x (javascript)
 const SmartBuffer = require('smart-buffer').SmartBuffer;
+
+// 2.x (typescript)
+import { SmartBuffer, SmartBufferOptions} from 'smart-buffer'latest
 
 function createLoginPacket(username, password, age, country) {
     let packet = new SmartBuffer();
