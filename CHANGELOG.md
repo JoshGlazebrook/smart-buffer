@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0
+> Released 02/12/2017
+
+### Bug Fixes
+* readUIntXXXX() methods will now throw an exception if they attempt to read beyond the bounds of the valid buffer data available.
+    * **Note** This is technically a breaking change, so version is bumped to 3.x. 
+
 ## 2.0
 > Relased 01/30/2017
 
