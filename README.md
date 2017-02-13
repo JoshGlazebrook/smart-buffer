@@ -28,6 +28,9 @@ smart-buffer can be used for writing to an underlying buffer as well as reading 
 ## Breaking Changes with 2.0
 The latest version (2.0+) is written in TypeScript, and are compiled to ES6 Javascript. This means the earliest Node.js it supports will be 4.x (in strict mode.) If you're using version 6 and above it will work without any issues. From an API standpoint, 2.0 is backwards compatible. The only difference is SmartBuffer is not exported directly as the root module.
 
+## Breaking Changes with 3.0
+Starting with 3.0, if any of the readIntXXXX() methods are called and the requested data is larger than the bounds of the internally managed valid buffer data, an exception will now be thrown.
+
 ## Installing:
 
 `npm install smart-buffer`
@@ -58,10 +61,10 @@ var SmartBuffer = require('smart-buffer');
 // 1.x (typescript)
 import SmartBuffer = require('smart-buffer');
 
-// 2.x (javascript)
+// 2.x+ (javascript)
 const SmartBuffer = require('smart-buffer').SmartBuffer;
 
-// 2.x (typescript)
+// 2.x+ (typescript)
 import { SmartBuffer, SmartBufferOptions} from 'smart-buffer';
 
 function createLoginPacket(username, password, age, country) {
