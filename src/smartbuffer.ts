@@ -756,10 +756,11 @@ class SmartBuffer {
      */
     private ensureReadable(length: number) {
         if (this.remaining() < length) {
-        	throw new Error('Reading beyond the bounds of the data.');
+            throw new Error('Reading beyond the bounds of the data.');
         }
     }
-        /**
+
+    /**
      * Ensures that the internal Buffer is large enough to write data.
      * 
      * @param minLength { Number } The minimum length of the data that needs to be written.

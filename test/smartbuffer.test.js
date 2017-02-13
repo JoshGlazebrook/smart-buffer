@@ -211,7 +211,16 @@ describe('Reading/Writing To/From SmartBuffer', function () {
             assert.closeTo(reader.readDoubleLE(), 1.234567890, 0.001);
         });
 
+        it('should throw an exception if attempting to read numeric values from a buffer with not enough data left', function() {
+            assert.throws(function() {
+                reader.readUInt32BE();
+            });
+        });
+
     });
+
+    
+
 
     describe('Basic String Values', function () {
         var reader = new SmartBuffer();
