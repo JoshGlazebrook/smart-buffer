@@ -1,4 +1,9 @@
 # Change Log
+## 3.0.1
+> Released 02/15/2017
+
+### Bug Fixes
+* Fixes a bug leftover from the TypeScript refactor where .readIntXXX() resulted in .readUIntXXX() being called by mistake.
 
 ## 3.0
 > Released 02/12/2017
