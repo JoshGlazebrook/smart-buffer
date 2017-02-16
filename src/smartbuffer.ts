@@ -155,7 +155,7 @@ class SmartBuffer {
      * @return { Number }
      */
     readInt8(): number {
-        return this.readNumberValue(Buffer.prototype.readUInt8, 1);
+        return this.readNumberValue(Buffer.prototype.readInt8, 1);
     }
 
     /**
@@ -164,7 +164,7 @@ class SmartBuffer {
      * @return { Number }
      */
     readInt16BE(): number {
-        return this.readNumberValue(Buffer.prototype.readUInt16BE, 2);
+        return this.readNumberValue(Buffer.prototype.readInt16BE, 2);
     }
 
     /**
@@ -173,7 +173,7 @@ class SmartBuffer {
      * @return { Number }
      */
     readInt16LE(): number {
-        return this.readNumberValue(Buffer.prototype.readUInt16LE, 2);
+        return this.readNumberValue(Buffer.prototype.readInt16LE, 2);
     }
 
     /**
@@ -182,7 +182,7 @@ class SmartBuffer {
      * @return { Number }
      */
     readInt32BE(): number {
-        return this.readNumberValue(Buffer.prototype.readUInt32BE, 4);
+        return this.readNumberValue(Buffer.prototype.readInt32BE, 4);
     }
 
     /**
@@ -191,7 +191,7 @@ class SmartBuffer {
      * @return { Number }
      */
     readInt32LE(): number {
-        return this.readNumberValue(Buffer.prototype.readUInt32LE, 4);
+        return this.readNumberValue(Buffer.prototype.readInt32LE, 4);
     }
 
     /**
