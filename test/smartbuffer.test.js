@@ -280,6 +280,10 @@ describe('Reading/Writing To/From SmartBuffer', function () {
             assert.strictEqual(reader.readStringNT().length, 0);
         });
 
+        it('should return an empty string', function () {
+            assert.strictEqual(reader.readString(0), '');
+        });
+
         it('should equal: bleh', function () {
             assert.strictEqual(reader.readStringNT(), 'bleh');
         });

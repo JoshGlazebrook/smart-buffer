@@ -477,7 +477,7 @@ class SmartBuffer {
      * @return { String }
      */
     readString(length?: number, encoding?: BufferEncoding): string {
-        const lengthVal = Math.min(length, this.length - this.readOffset) || this.length - this.readOffset;
+        const lengthVal = (typeof length === 'number') ? Math.min(length, this.length - this.readOffset) : this.length - this.readOffset;
         const value = this.buff.slice(this.readOffset, this.readOffset + lengthVal).toString(encoding || this.encoding);
 
         this.readOffset += lengthVal;
