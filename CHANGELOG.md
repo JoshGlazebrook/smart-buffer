@@ -1,4 +1,10 @@
 # Change Log
+## 3.0.2
+> Released 02/17/2017
+
+### Bug Fixes
+* Fixes a bug where using readString with a length of zero resulted in reading the remaining data instead of returning an empty string. (Fixed by Seldszar)
+
 ## 3.0.1
 > Released 02/15/2017
 
