@@ -418,18 +418,24 @@ declare class SmartBuffer {
      */
     destroy(): void;
     /**
-     * Ensures that the internal Buffer is large enough to write data.
+     * Ensures that the internal Buffer is large enough to read data.
      *
+     * @param length { Number } The length of the data that needs to be read.
+     */
+    private ensureReadable(length: number);
+    /**
+     * Ensures that the internal Buffer is large enough to write data.
+     * 
      * @param minLength { Number } The minimum length of the data that needs to be written.
      * @param offset { Number } The offset of the data to be written.
      */
-    private ensureWriteable(minLength, offset?);
+    private ensureWriteable(minLength: number, offset?: number);
     /**
      * Ensures that the internal Buffer is large enough to write at least the given amount of data.
      *
      * @param minLength { Number } The minimum length of the data needs to be written.
      */
-    private ensureCapacity(minLength);
+    private ensureCapacity(minLength: number);
     /**
      * Reads a numeric number value using the provided function.
      *
@@ -438,7 +444,7 @@ declare class SmartBuffer {
      *
      * @param { Number }
      */
-    private readNumberValue(func, byteSize);
+    private readNumberValue(func: (offset: number) => number, byteSize: number);
 }
 
 export {
