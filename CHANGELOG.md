@@ -1,4 +1,8 @@
 # Change Log
+## 3.0.3
+> Released 02/19/2017
+* Adds missing type definitions for some internal functions.
+
 ## 3.0.2
 > Released 02/17/2017
 
