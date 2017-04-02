@@ -541,7 +541,7 @@ class SmartBuffer {
         this.buff.write(value, offsetVal, byteLength, encodingVal);
 
         // Increment internal Buffer write offset;
-        this.writeOffset += byteLength;
+        this.writeOffset = byteLength + offsetVal;
         return this;
     }
 
@@ -624,7 +624,7 @@ class SmartBuffer {
         value.copy(this.buff, offsetVal);
 
         // Increment internal Buffer write offset
-        this.writeOffset += value.length;
+        this.writeOffset = value.length + offsetVal;
         return this;
     }
 
@@ -857,7 +857,7 @@ class SmartBuffer {
         func.call(this.buff, value, offsetVal);
 
         // Adjusts internal write offset
-        this.writeOffset += byteSize;
+        this.writeOffset = byteSize + offsetVal;
     }
 }
 
@@ -865,4 +865,3 @@ export {
     SmartBufferOptions,
     SmartBuffer
 };
-
