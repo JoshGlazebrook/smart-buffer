@@ -38,13 +38,39 @@
   },
   "typings": "typings/index",
   "dependencies": {
-    "@types/node": "^7.0.14"
+    "@types/node": "^7.0.14",
+    "nyc": "^10.3.2",
+    "source-map-support": "^0.4.15",
+    "ts-node": "^3.0.4"
   },
   "scripts": {
-    "pretest": "tsc -p ./",
-    "test": "mocha build/test/smartbuffer.test.js",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha recursive test",
-    "fullcoverage": "node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive test",
-    "prepublish": "npm install -g typescript && tsc -p ./"
+    "coverage": "tsc -p ./ && istanbul cover node_modules/mocha/bin/_mocha recursive build/test",
+    "fullcoverage": "tsc -p ./ && node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive build/test",
+    "prepublish": "npm install -g typescript && tsc -p ./",
+    "test": "NODE_ENV=test mocha --recursive --compilers ts:ts-node/register",
+    "cover": "NODE_ENV=test nyc npm t"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**.*.d.ts",
+      "node_modules",
+      "typings"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
   }
 }

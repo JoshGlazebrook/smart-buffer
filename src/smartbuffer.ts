@@ -19,10 +19,10 @@ interface SmartBufferOptions {
 }
 
 // The default Buffer size if one is not provided.
-const DEFAULT_SMARTBUFFER_SIZE = 4096;
+const DEFAULT_SMARTBUFFER_SIZE: number = 4096;
 
 // The default string encoding to use for reading/writing strings.
-const DEFAULT_SMARTBUFFER_ENCODING = 'utf8';
+const DEFAULT_SMARTBUFFER_ENCODING: BufferEncoding = 'utf8';
 
 class SmartBuffer {
     public length: number = 0;
@@ -669,7 +669,7 @@ class SmartBuffer {
      * @return { String }
      */
     readString(length?: number, encoding?: BufferEncoding): string {
-        // TODO: bounds
+        // TODO: bounds (where else?)
         const lengthVal = (typeof length === 'number') ? Math.min(length, this.length - this._readOffset) : this.length - this._readOffset;
         const value = this._buff.slice(this._readOffset, this._readOffset + lengthVal).toString(encoding || this._encoding);
 
@@ -709,6 +709,9 @@ class SmartBuffer {
      * @return { String }
      */
     readStringNT(encoding?: BufferEncoding): string {
+        if (typeof encoding !== 'undefined') {
+            checkEncoding(encoding);
+        }
 
         // Set null character position to the end SmartBuffer instance.
         let nullPos = this.length;
