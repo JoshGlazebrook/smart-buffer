@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="utils.d.ts" />
 /**
  * Object interface for constructing new SmartBuffer instances.
  */
@@ -9,8 +10,8 @@ interface SmartBufferOptions {
 }
 declare class SmartBuffer {
     length: number;
-    encoding: BufferEncoding;
-    private buff;
+    private _encoding;
+    private _buff;
     private _writeOffset;
     private _readOffset;
     /**
@@ -446,7 +447,7 @@ declare class SmartBuffer {
      * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
      * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
      */
-    writeStringNT(value: string, offset?: number, encoding?: BufferEncoding): void;
+    writeStringNT(value: string, arg2?: number | BufferEncoding, encoding?: BufferEncoding): void;
     /**
      * Reads a Buffer from the internal read position.
      *
@@ -507,7 +508,7 @@ declare class SmartBuffer {
     /**
      * Sets the read offset value of the SmartBuffer instance.
      *
-     * @param position { Number } - The value to set.
+     * @param offset { Number } - The offset value to set.
      */
     readOffset: number;
     /**
@@ -518,35 +519,28 @@ declare class SmartBuffer {
     /**
      * Sets the write offset value of the SmartBuffer instance.
      *
-     * @param position { Number } - The value to set.
+     * @param offset { Number } - The offset value to set.
      */
     writeOffset: number;
     /**
-     * Moves the read offset forward.
+     * Gets the currently set string encoding of the SmartBuffer instance.
      *
-     * @param amount { Number } The amount to move the read offset forward by.
+     * @return { BufferEncoding } The string Buffer encoding currently set.
      */
-    skip(amount: number): void;
     /**
-     * Moves the read offset backwards.
+     * Sets the string encoding of the SmartBuffer instance.
      *
-     * @param amount { Number } The amount to move the read offset backwards by.
+     * @param encoding { BufferEncoding } The string Buffer encoding to set.
      */
-    rewind(amount: number): void;
+    encoding: BufferEncoding;
     /**
-     * Moves the read offset to a specific position.
+     * Gets the underlying internal Buffer. (This includes unmanaged data in the Buffer)
      *
-     * @param position { Number } The position to move the read offset to.
+     * @return { Buffer } The Buffer value.
      */
-    skipTo(position: number): void;
+    readonly internalBuffer: Buffer;
     /**
-     * Moves the read offset to a specific position.
-     *
-     * @param position { Number } The position to move the read offset to.
-     */
-    moveTo(position: number): void;
-    /**
-     * Gets the value of the internal managed Buffer
+     * Gets the value of the internal managed Buffer (Includes managed data only)
      *
      * @param { Buffer }
      */

@@ -1170,7 +1170,6 @@ class SmartBuffer {
     private readNumberValue(func: (offset: number) => number, byteSize: number, offset?: number) {
         this.ensureReadable(byteSize, offset);
 
-
         // Call Buffer.readXXXX();
         const value = func.call(this._buff, typeof offset === 'number' ? offset : this._readOffset);
 
