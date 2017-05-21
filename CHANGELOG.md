@@ -1,4 +1,12 @@
 # Change Log
+## 4.0
+> Released 05/10/2017
+* 
+
+### New Features
+
+### Breaking Changes
+
 ## 3.0.3
 > Released 02/19/2017
 * Adds missing type definitions for some internal functions.

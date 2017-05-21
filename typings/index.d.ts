@@ -7,14 +7,12 @@ interface SmartBufferOptions {
     size?: number;
     buff?: Buffer;
 }
-
 declare class SmartBuffer {
     length: number;
     encoding: BufferEncoding;
     private buff;
-    private writeOffset;
-    private readOffset;
-
+    private _writeOffset;
+    private _readOffset;
     /**
      * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
      *
@@ -35,97 +33,56 @@ declare class SmartBuffer {
     static fromBuffer(buff: Buffer, encoding?: BufferEncoding): SmartBuffer;
     /**
      * Creates a new SmartBuffer instance with the provided SmartBufferOptions options.
-     * 
+     *
      * @param options { SmartBufferOptions } The options to use when creating the SmartBuffer instance.
      */
-    static fromOptions(options: SmartBufferOptions): SmartBuffer
+    static fromOptions(options: SmartBufferOptions): SmartBuffer;
     /**
      * Type checking function that determines if an object is a SmartBufferOptions object.
      */
     static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
-
     /**
-     * Creates a new SmartBuffer instance (defaults to utf8 encoding, 4096 internal Buffer size)
-     */
-    constructor();
-
-    /**
-     * Creates a new SmartBuffer instance
+     * Creates a new SmartBuffer instance.
      *
-     * @param size { Number } The size the underlying buffer instance should be instantiated to (defaults to 4096)
-     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
-     * 
-     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
+     * @param arg1 { Number | BufferEncoding | Buffer | SmartBufferOptions }
+     * @param arg2 { BufferEncoding }
      */
-    constructor(size: number, encoding?: BufferEncoding);
-
+    constructor(arg1?: number | BufferEncoding | Buffer | SmartBufferOptions, arg2?: BufferEncoding);
     /**
-     * Creates a new SmartBuffer instance
+     * Reads an Int8 value from the current read position or an optionally provided offset.
      *
-     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
-     * 
-     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
-     */
-    constructor(encoding?: BufferEncoding);
-
-    /**
-     * Creates a new SmartBuffer instance
-     *
-     * @param buff { Buffer } An existing buffer instance to copy to this smart buffer instance
-     * @param encoding { BufferEncoding } The string encoding to use for reading/writing strings (defaults to utf8)
-     * 
-     * @deprecated The .fromXXX() factory methods are now preferred over the new instantiator method.
-     */
-    constructor(buff: Buffer, encoding?: string);
-
-    /**
-     * Creates a new SmartBuffer instance
-     * 
-     * @param options { SmartBufferOptions } The SmartBufferOptions settings to use when creating the SmartBuffer instance.
-     * 
-     */
-    constructor(options: SmartBufferOptions);
-
-    /**
-     * Writes a numeric number value using the provided function.
-     *
-     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
-     * @param byteSize { Number } The number of bytes written.
-     * @param value { Number } The number value to write.
-     * @param offset { Number } the offset to write the number at.
-     *
-     */
-    private writeNumberValue(func, byteSize, value, offset?);
-    /**
-     * Reads an Int8 value from the current read position.
-     *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readInt8(): number;
+    readInt8(offset?: number): number;
     /**
-     * Reads an Int16BE value from the current read position.
+     * Reads an Int16BE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readInt16BE(): number;
+    readInt16BE(offset?: number): number;
     /**
-     * Reads an Int16LE value from the current read position.
+     * Reads an Int16LE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readInt16LE(): number;
+    readInt16LE(offset?: number): number;
     /**
-     * Reads an Int32BE value from the current read position.
+     * Reads an Int32BE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readInt32BE(): number;
+    readInt32BE(offset?: number): number;
     /**
-     * Reads an Int32LE value from the current read position.
+     * Reads an Int32LE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readInt32LE(): number;
+    readInt32LE(offset?: number): number;
     /**
      * Writes an Int8 value to the current write position (or at optional offset).
      *
@@ -136,6 +93,15 @@ declare class SmartBuffer {
      */
     writeInt8(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts an Int8 value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertInt8(value: number, offset: number): SmartBuffer;
+    /**
      * Writes an Int16BE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -144,6 +110,15 @@ declare class SmartBuffer {
      * @return this
      */
     writeInt16BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Inserts an Int16BE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertInt16BE(value: number, offset: number): SmartBuffer;
     /**
      * Writes an Int16LE value to the current write position (or at optional offset).
      *
@@ -154,6 +129,15 @@ declare class SmartBuffer {
      */
     writeInt16LE(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts an Int16LE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertInt16LE(value: number, offset: number): SmartBuffer;
+    /**
      * Writes an Int32BE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -162,6 +146,15 @@ declare class SmartBuffer {
      * @return this
      */
     writeInt32BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Inserts an Int32BE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertInt32BE(value: number, offset: number): SmartBuffer;
     /**
      * Writes an Int32LE value to the current write position (or at optional offset).
      *
@@ -172,35 +165,49 @@ declare class SmartBuffer {
      */
     writeInt32LE(value: number, offset?: number): SmartBuffer;
     /**
-     * Reads an UInt8 value from the current read position.
+     * Inserts an Int32LE value at the given offset value.
      *
-     * @return { Number }
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
      */
-    readUInt8(): number;
+    insertInt32LE(value: number, offset: number): SmartBuffer;
     /**
-     * Reads an UInt16BE value from the current read position.
+     * Reads an UInt8 value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readUInt16BE(): number;
+    readUInt8(offset?: number): number;
     /**
-     * Reads an UInt16LE value from the current read position.
+     * Reads an UInt16BE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readUInt16LE(): number;
+    readUInt16BE(offset?: number): number;
     /**
-     * Reads an UInt32BE value from the current read position.
+     * Reads an UInt16LE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readUInt32BE(): number;
+    readUInt16LE(offset?: number): number;
     /**
-     * Reads an UInt32LE value from the current read position.
+     * Reads an UInt32BE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readUInt32LE(): number;
+    readUInt32BE(offset?: number): number;
+    /**
+     * Reads an UInt32LE value from the current read position or an optionally provided offset.
+     *
+     * @param offset { Number } The offset to read data from (optional)
+     * @return { Number }
+     */
+    readUInt32LE(offset?: number): number;
     /**
      * Writes an UInt8 value to the current write position (or at optional offset).
      *
@@ -211,6 +218,15 @@ declare class SmartBuffer {
      */
     writeUInt8(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts an UInt8 value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertUInt8(value: number, offset: number): SmartBuffer;
+    /**
      * Writes an UInt16BE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -219,6 +235,15 @@ declare class SmartBuffer {
      * @return this
      */
     writeUInt16BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Inserts an UInt16BE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertUInt16BE(value: number, offset: number): SmartBuffer;
     /**
      * Writes an UInt16LE value to the current write position (or at optional offset).
      *
@@ -229,6 +254,15 @@ declare class SmartBuffer {
      */
     writeUInt16LE(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts an UInt16LE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertUInt16LE(value: number, offset: number): SmartBuffer;
+    /**
      * Writes an UInt32BE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -237,6 +271,15 @@ declare class SmartBuffer {
      * @return this
      */
     writeUInt32BE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Inserts an UInt32BE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertUInt32BE(value: number, offset: number): SmartBuffer;
     /**
      * Writes an UInt32LE value to the current write position (or at optional offset).
      *
@@ -247,17 +290,28 @@ declare class SmartBuffer {
      */
     writeUInt32LE(value: number, offset?: number): SmartBuffer;
     /**
-     * Reads an FloatBE value from the current read position.
+     * Inserts an UInt32LE value at the given offset value.
      *
-     * @return { Number }
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
      */
-    readFloatBE(): number;
+    insertUInt32LE(value: number, offset: number): SmartBuffer;
     /**
-     * Reads an FloatLE value from the current read position.
+     * Reads an FloatBE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readFloatLE(): number;
+    readFloatBE(offset?: number): number;
+    /**
+     * Reads an FloatLE value from the current read position or an optionally provided offset.
+     *
+     * @param offset { Number } The offset to read data from (optional)
+     * @return { Number }
+     */
+    readFloatLE(offset?: number): number;
     /**
      * Writes a FloatBE value to the current write position (or at optional offset).
      *
@@ -268,6 +322,15 @@ declare class SmartBuffer {
      */
     writeFloatBE(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts a FloatBE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertFloatBE(value: number, offset: number): SmartBuffer;
+    /**
      * Writes a FloatLE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -277,17 +340,28 @@ declare class SmartBuffer {
      */
     writeFloatLE(value: number, offset?: number): SmartBuffer;
     /**
-     * Reads an DoublEBE value from the current read position.
+     * Inserts a FloatLE value at the given offset value.
      *
-     * @return { Number }
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
      */
-    readDoubleBE(): number;
+    insertFloatLE(value: number, offset: number): SmartBuffer;
     /**
-     * Reads an DoubleLE value from the current read position.
+     * Reads an DoublEBE value from the current read position or an optionally provided offset.
      *
+     * @param offset { Number } The offset to read data from (optional)
      * @return { Number }
      */
-    readDoubleLE(): number;
+    readDoubleBE(offset?: number): number;
+    /**
+     * Reads an DoubleLE value from the current read position or an optionally provided offset.
+     *
+     * @param offset { Number } The offset to read data from (optional)
+     * @return { Number }
+     */
+    readDoubleLE(offset?: number): number;
     /**
      * Writes a DoubleBE value to the current write position (or at optional offset).
      *
@@ -298,6 +372,15 @@ declare class SmartBuffer {
      */
     writeDoubleBE(value: number, offset?: number): SmartBuffer;
     /**
+     * Inserts a DoubleBE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertDoubleBE(value: number, offset: number): SmartBuffer;
+    /**
      * Writes a DoubleLE value to the current write position (or at optional offset).
      *
      * @param value { Number } The value to write.
@@ -306,6 +389,15 @@ declare class SmartBuffer {
      * @return this
      */
     writeDoubleLE(value: number, offset?: number): SmartBuffer;
+    /**
+     * Inserts a DoubleLE value at the given offset value.
+     *
+     * @param value { Number } The value to insert.
+     * @param offset { Number } The offset to insert the value at.
+     *
+     * @return this
+     */
+    insertDoubleLE(value: number, offset: number): SmartBuffer;
     /**
      * Reads a String from the current read position.
      *
@@ -316,10 +408,18 @@ declare class SmartBuffer {
      */
     readString(length?: number, encoding?: BufferEncoding): string;
     /**
-     * Writes a String to the current write position.
+     * Inserts a String
+     *
+     * @param value { String } The String value to insert.
+     * @param arg2 { Number | String } The offset to insert the string at, or the BufferEncoding to use.
+     * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
+     */
+    insertString(value: string, offset: number, encoding?: BufferEncoding): this;
+    /**
+     * Writes a String
      *
      * @param value { String } The String value to write.
-     * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
+     * @param arg2 { Number | String } The offset to write the string at, or the BufferEncoding to use.
      * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
      */
     writeString(value: string, arg2?: number | BufferEncoding, encoding?: BufferEncoding): this;
@@ -332,13 +432,21 @@ declare class SmartBuffer {
      */
     readStringNT(encoding?: BufferEncoding): string;
     /**
-     * Writes a null-terminated String to the current write position.
+     * Inserts a null-terminated String.
      *
      * @param value { String } The String value to write.
      * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
      * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
      */
-    writeStringNT(value: string, offset?: number | BufferEncoding, encoding?: BufferEncoding): void;
+    insertStringNT(value: string, offset: number, encoding?: BufferEncoding): void;
+    /**
+     * Writes a null-terminated String.
+     *
+     * @param value { String } The String value to write.
+     * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
+     * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
+     */
+    writeStringNT(value: string, offset?: number, encoding?: BufferEncoding): void;
     /**
      * Reads a Buffer from the internal read position.
      *
@@ -353,6 +461,13 @@ declare class SmartBuffer {
      * @param value { Buffer } The Buffer to write.
      * @param offset { Number } The offset to write the Buffer to.
      */
+    insertBuffer(value: Buffer, offset: number): this;
+    /**
+     * Writes a Buffer to the current write position.
+     *
+     * @param value { Buffer } The Buffer to write.
+     * @param offset { Number } The offset to write the Buffer to.
+     */
     writeBuffer(value: Buffer, offset?: number): this;
     /**
      * Reads a null-terminated Buffer from the current read poisiton.
@@ -361,7 +476,14 @@ declare class SmartBuffer {
      */
     readBufferNT(): Buffer;
     /**
-     * Writes a null-terminated Buffer to the current write position.
+     * Inserts a null-terminated Buffer.
+     *
+     * @param value { Buffer } The Buffer to write.
+     * @param offset { Number } The offset to write the Buffer to.
+     */
+    insertBufferNT(value: Buffer, offset: number): this;
+    /**
+     * Writes a null-terminated Buffer.
      *
      * @param value { Buffer } The Buffer to write.
      * @param offset { Number } The offset to write the Buffer to.
@@ -377,6 +499,28 @@ declare class SmartBuffer {
      * @return { Number }
      */
     remaining(): number;
+    /**
+     * Gets the current read offset value of the SmartBuffer instance.
+     *
+     * @return { Number }
+     */
+    /**
+     * Sets the read offset value of the SmartBuffer instance.
+     *
+     * @param position { Number } - The value to set.
+     */
+    readOffset: number;
+    /**
+     * Gets the current write offset value of the SmartBuffer instance.
+     *
+     * @return { Number }
+     */
+    /**
+     * Sets the write offset value of the SmartBuffer instance.
+     *
+     * @param position { Number } - The value to set.
+     */
+    writeOffset: number;
     /**
      * Moves the read offset forward.
      *
@@ -418,36 +562,77 @@ declare class SmartBuffer {
      */
     destroy(): void;
     /**
+     * Handles inserting and writing strings.
+     *
+     * @param value { String } The String value to insert.
+     * @param isInsert { Boolean } True if inserting a string, false if writing.
+     * @param arg2 { Number | String } The offset to insert the string at, or the BufferEncoding to use.
+     * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
+     */
+    private _handleString(value, isInsert, arg3?, encoding?);
+    /**
+     * Handles writing or insert of a Buffer.
+     *
+     * @param value { Buffer } The Buffer to write.
+     * @param offset { Number } The offset to write the Buffer to.
+     */
+    private _handleBuffer(value, isInsert, offset?);
+    /**
      * Ensures that the internal Buffer is large enough to read data.
      *
      * @param length { Number } The length of the data that needs to be read.
+     * @param offset { Number } The offset of the data that needs to be read.
      */
-    private ensureReadable(length: number);
+    private ensureReadable(length, offset?);
     /**
-     * Ensures that the internal Buffer is large enough to write data.
-     * 
-     * @param minLength { Number } The minimum length of the data that needs to be written.
+     * Ensures that the internal Buffer is large enough to insert data.
+     *
+     * @param dataLength { Number } The length of the data that needs to be written.
      * @param offset { Number } The offset of the data to be written.
      */
-    private ensureWriteable(minLength: number, offset?: number);
+    private ensureInsertable(dataLength, offset);
+    /**
+     * Ensures that the internal Buffer is large enough to write data.
+     *
+     * @param dataLength { Number } The length of the data that needs to be written.
+     * @param offset { Number } The offset of the data to be written (defaults to writeOffset).
+     */
+    private ensureWriteable(dataLength, offset?);
     /**
      * Ensures that the internal Buffer is large enough to write at least the given amount of data.
      *
      * @param minLength { Number } The minimum length of the data needs to be written.
      */
-    private ensureCapacity(minLength: number);
+    private ensureCapacity(minLength);
     /**
      * Reads a numeric number value using the provided function.
      *
      * @param func { Function(offset: number) => number } The function to read data on the internal Buffer with.
      * @param byteSize { Number } The number of bytes read.
+     * @param offset { Number } The offset to read from (optional). When this is not provided, the managed readOffset is used instead.
      *
      * @param { Number }
      */
-    private readNumberValue(func: (offset: number) => number, byteSize: number);
+    private readNumberValue(func, byteSize, offset?);
+    /**
+     * Inserts a numeric number value based on the given offset and value.
+     *
+     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes written.
+     * @param value { Number } The number value to write.
+     * @param offset { Number } the offset to write the number at (REQUIRED).
+     *
+     */
+    private insertNumberValue(func, byteSize, value, offset);
+    /**
+     * Writes a numeric number value based on the given offset and value.
+     *
+     * @param func { Function(offset: number, offset?) => number} The function to write data on the internal Buffer with.
+     * @param byteSize { Number } The number of bytes written.
+     * @param value { Number } The number value to write.
+     * @param offset { Number } the offset to write the number at (REQUIRED).
+     *
+     */
+    private writeNumberValue(func, byteSize, value, offset?);
 }
-
-export {
-    SmartBufferOptions,
-    SmartBuffer
-};
+export { SmartBufferOptions, SmartBuffer };

@@ -35,6 +35,10 @@
 		"no-shadowed-variable": true,
 		"no-string-literal": false,
 		"no-switch-case-fall-through": false,
+		"no-consecutive-blank-lines": [
+			true, 1
+		],
+		"no-trailing-whitespace": true,
 		"no-unused-variable": true,
 		"no-unreachable": true,
 		"no-use-before-declare": true,
