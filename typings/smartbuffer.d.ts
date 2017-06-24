@@ -14,13 +14,19 @@ declare class SmartBuffer {
     private _writeOffset;
     private _readOffset;
     /**
-     * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
+     * Creates a new SmartBuffer instance.
      *
-     * @param size { Number } The size of the internal Buffer.
-     * @param encoding { String } The BufferEncoding to use for strings.
-     *
-     * @return { SmartBuffer }
+     * @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
      */
+    constructor(options?: SmartBufferOptions);
+    /**
+ * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
+ *
+ * @param size { Number } The size of the internal Buffer.
+ * @param encoding { String } The BufferEncoding to use for strings.
+ *
+ * @return { SmartBuffer }
+ */
     static fromSize(size: number, encoding?: BufferEncoding): SmartBuffer;
     /**
      * Creates a new SmartBuffer instance with the provided Buffer and optional encoding.
@@ -41,12 +47,6 @@ declare class SmartBuffer {
      * Type checking function that determines if an object is a SmartBufferOptions object.
      */
     static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
-    /**
-     * Creates a new SmartBuffer instance.
-     *
-     * @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
-     */
-    constructor(options?: SmartBufferOptions);
     /**
      * Reads an Int8 value from the current read position or an optionally provided offset.
      *
@@ -400,7 +400,8 @@ declare class SmartBuffer {
     /**
      * Reads a String from the current read position.
      *
-     * @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for the string (Defaults to instance level encoding).
+     * @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for
+     *             the string (Defaults to instance level encoding).
      * @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
      *
      * @return { String }
