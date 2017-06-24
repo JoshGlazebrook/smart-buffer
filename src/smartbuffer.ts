@@ -35,6 +35,48 @@ class SmartBuffer {
     private _readOffset: number = 0;
 
     /**
+     * Creates a new SmartBuffer instance.
+     *
+     * @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
+     */
+    constructor(options?: SmartBufferOptions) {
+        if (SmartBuffer.isSmartBufferOptions(options)) {
+            // Checks for encoding
+            if (options.encoding) {
+                checkEncoding(options.encoding);
+                this._encoding = options.encoding;
+            }
+
+            // Checks for initial size length
+            if (options.size) {
+                if (isFiniteInteger(options.size) && options.size > 0) {
+                    this._buff = Buffer.allocUnsafe(options.size);
+                } else {
+                    throw new Error(ERRORS.INVALID_SMARTBUFFER_SIZE);
+                }
+                // Check for initial Buffer
+            } else if (options.buff) {
+                if (options.buff instanceof Buffer) {
+                    this._buff = options.buff;
+                    this.length = options.buff.length;
+                } else {
+                    throw new Error(ERRORS.INVALID_SMARTBUFFER_BUFFER);
+                }
+            } else {
+                this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
+            }
+        } else {
+            // If something was passed but it's not a SmartBufferOptions object
+            if (typeof options !== 'undefined') {
+                throw new Error(ERRORS.INVALID_SMARTBUFFER_OBJECT);
+            }
+
+            // Otherwise default to sane options
+            this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
+        }
+    }
+
+        /**
      * Creates a new SmartBuffer instance with the provided internal Buffer size and optional encoding.
      *
      * @param size { Number } The size of the internal Buffer.
@@ -80,48 +122,6 @@ class SmartBuffer {
         const castOptions = (<SmartBufferOptions>options);
 
         return castOptions && (castOptions.encoding !== undefined || castOptions.size !== undefined || castOptions.buff !== undefined);
-    }
-
-    /**
-     * Creates a new SmartBuffer instance.
-     *
-     * @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
-     */
-    constructor(options?: SmartBufferOptions) {
-        if (SmartBuffer.isSmartBufferOptions(options)) {
-            // Checks for encoding
-            if (options.encoding) {
-                checkEncoding(options.encoding);
-                this._encoding = options.encoding;
-            }
-
-            // Checks for initial size length
-            if (options.size) {
-                if (isFiniteInteger(options.size) && options.size > 0) {
-                    this._buff = Buffer.allocUnsafe(options.size);
-                } else {
-                    throw new Error(ERRORS.INVALID_SMARTBUFFER_SIZE);
-                }
-                // Check for initial Buffer
-            } else if (options.buff) {
-                if (options.buff instanceof Buffer) {
-                    this._buff = options.buff;
-                    this.length = options.buff.length;
-                } else {
-                    throw new Error(ERRORS.INVALID_SMARTBUFFER_BUFFER);
-                }
-            } else {
-                this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-            }
-        } else {
-            // If something was passed but it's not a SmartBufferOptions object
-            if (typeof options !== 'undefined') {
-                throw new Error(ERRORS.INVALID_SMARTBUFFER_OBJECT);
-            }
-
-            // Otherwise default to sane options
-            this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-        }
     }
 
     // Signed integers
@@ -641,7 +641,8 @@ class SmartBuffer {
     /**
      * Reads a String from the current read position.
      *
-     * @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for the string (Defaults to instance level encoding).
+     * @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for
+     *             the string (Defaults to instance level encoding).
      * @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
      *
      * @return { String }
