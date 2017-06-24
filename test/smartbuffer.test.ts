@@ -1,4 +1,3 @@
-import { Buffer } from 'buffer';
 import { SmartBuffer, SmartBufferOptions } from '../src/smartbuffer';
 import {
     ERRORS,
