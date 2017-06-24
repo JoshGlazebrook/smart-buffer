@@ -7,7 +7,7 @@ const ERRORS = {
     INVALID_ENCODING: 'Invalid encoding provided. Please specify a valid encoding the internal Node.js Buffer supports.',
     INVALID_SMARTBUFFER_SIZE: 'Invalid size provided. Size must be a valid integer greater than zero.',
     INVALID_SMARTBUFFER_BUFFER: 'Invalid Buffer provided in SmartBufferOptions.',
-    INVALID_SMARTBUFFER_OBJECT: 'Invalid object supplied to SmartBuffer constructor.',
+    INVALID_SMARTBUFFER_OBJECT: 'Invalid SmartBufferOptions object supplied to SmartBuffer constructor or factory methods.',
     INVALID_OFFSET: 'An invalid offset value was provided.',
     INVALID_OFFSET_NON_NUMBER: 'An invalid offset value was provided. A numeric value is required.',
     INVALID_LENGTH: 'An invalid length value was provided.',
@@ -34,7 +34,7 @@ function checkEncoding(encoding: BufferEncoding) {
  * @param { Number } value The number value to check.
  */
 function isFiniteInteger(value: number): boolean {
-    return typeof value === 'number' && Number.isFinite(value) && Number.isInteger(value);
+    return typeof value === 'number' && isFinite(value) && isInteger(value);
 }
 
 /**
@@ -46,7 +46,7 @@ function isFiniteInteger(value: number): boolean {
 function checkOffsetOrLengthValue(value: any, offset: boolean) {
     if (typeof value === 'number') {
         // Check for non finite/non integers
-        if (!isFiniteInteger(value)) {
+        if (!isFiniteInteger(value) || value < 0) {
             throw new Error(offset ? ERRORS.INVALID_OFFSET : ERRORS.INVALID_LENGTH);
         }
     } else {
@@ -82,6 +82,16 @@ function checkTargetOffset(offset: number, buff: SmartBuffer) {
     if (offset < 0 || offset > buff.length) {
         throw new Error(ERRORS.INVALID_TARGET_OFFSET);
     }
+}
+
+/**
+ * Determines whether a given number is a integer.
+ * @param value The number to check.
+ */
+function isInteger(value: number) {
+    return typeof value === 'number' &&
+        isFinite(value) &&
+        Math.floor(value) === value;
 }
 
 export {

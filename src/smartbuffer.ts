@@ -2,8 +2,10 @@ import { Buffer } from 'buffer';
 import {
     ERRORS,
     checkOffsetValue,
+    checkLengthValue,
     checkTargetOffset,
-    checkEncoding
+    checkEncoding,
+    isFiniteInteger
 } from './utils';
 
 /**
@@ -83,66 +85,42 @@ class SmartBuffer {
     /**
      * Creates a new SmartBuffer instance.
      *
-     * @param arg1 { Number | BufferEncoding | Buffer | SmartBufferOptions }
-     * @param arg2 { BufferEncoding }
+     * @param options { SmartBufferOptions } The SmartBufferOptions to apply to this instance.
      */
-    constructor(arg1?: number | BufferEncoding | Buffer | SmartBufferOptions, arg2?: BufferEncoding) {
-
-        // Initial buffer size provided
-        if (typeof arg1 === 'number') {
-            if (Number.isInteger(arg1) && arg1 > 0) {
-                this._buff = Buffer.allocUnsafe(arg1);
-            } else {
-                throw new Error(ERRORS.INVALID_SMARTBUFFER_SIZE);
-            }
-            // String Encoding Provided
-        } else if (typeof arg1 === 'string') {
-            checkEncoding(arg1);
-
-            this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-            this._encoding = arg1;
-
-            // Buffer instance provided
-        } else if (arg1 instanceof Buffer) {
-            this._buff = arg1;
-            this.length = arg1.length;
-        } else if (SmartBuffer.isSmartBufferOptions(arg1)) {
+    constructor(options?: SmartBufferOptions) {
+        if (SmartBuffer.isSmartBufferOptions(options)) {
             // Checks for encoding
-            if (arg1.encoding) {
-                checkEncoding(arg1.encoding);
-
-                this._encoding = arg1.encoding;
+            if (options.encoding) {
+                checkEncoding(options.encoding);
+                this._encoding = options.encoding;
             }
 
             // Checks for initial size length
-            if (arg1.size) {
-                if (Number.isInteger(arg1.size) && arg1.size > 0) {
-                    this._buff = Buffer.allocUnsafe(arg1.size);
+            if (options.size) {
+                if (isFiniteInteger(options.size) && options.size > 0) {
+                    this._buff = Buffer.allocUnsafe(options.size);
                 } else {
                     throw new Error(ERRORS.INVALID_SMARTBUFFER_SIZE);
                 }
                 // Check for initial Buffer
-            } else if (arg1.buff) {
-                if (arg1.buff instanceof Buffer) {
-                    this._buff = arg1.buff;
-                    this.length = arg1.buff.length;
+            } else if (options.buff) {
+                if (options.buff instanceof Buffer) {
+                    this._buff = options.buff;
+                    this.length = options.buff.length;
                 } else {
                     throw new Error(ERRORS.INVALID_SMARTBUFFER_BUFFER);
                 }
             } else {
                 this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
             }
-        } else if (typeof arg1 === 'object') {
-            throw new Error(ERRORS.INVALID_SMARTBUFFER_OBJECT);
         } else {
+            // If something was passed but it's not a SmartBufferOptions object
+            if (typeof options !== 'undefined') {
+                throw new Error(ERRORS.INVALID_SMARTBUFFER_OBJECT);
+            }
+
+            // Otherwise default to sane options
             this._buff = Buffer.allocUnsafe(DEFAULT_SMARTBUFFER_SIZE);
-        }
-
-        // Check for encoding (Buffer, Encoding) constructor.
-        if (typeof arg2 === 'string') {
-            checkEncoding(arg2);
-
-            this._encoding = arg2;
         }
     }
 
@@ -663,14 +641,28 @@ class SmartBuffer {
     /**
      * Reads a String from the current read position.
      *
-     * @param length { Number } The number of bytes to read as a String.
+     * @param arg1 { Number | String } The number of bytes to read as a String, or the BufferEncoding to use for the string (Defaults to instance level encoding).
      * @param encoding { String } The BufferEncoding to use for the string (Defaults to instance level encoding).
      *
      * @return { String }
      */
-    readString(length?: number, encoding?: BufferEncoding): string {
-        // TODO: bounds (where else?)
-        const lengthVal = (typeof length === 'number') ? Math.min(length, this.length - this._readOffset) : this.length - this._readOffset;
+    readString(arg1?: number | BufferEncoding, encoding?: BufferEncoding): string {
+        let lengthVal;
+
+        // Length provided
+        if (typeof arg1 === 'number') {
+            checkLengthValue(arg1);
+            lengthVal = Math.min(arg1, this.length - this._readOffset);
+        } else {
+            encoding = arg1;
+            lengthVal = this.length - this._readOffset;
+        }
+
+        // Check encoding
+        if (typeof encoding !== 'undefined') {
+            checkEncoding(encoding);
+        }
+
         const value = this._buff.slice(this._readOffset, this._readOffset + lengthVal).toString(encoding || this._encoding);
 
         this._readOffset += lengthVal;
@@ -771,6 +763,10 @@ class SmartBuffer {
      * @return { Buffer }
      */
     readBuffer(length?: number): Buffer {
+        if (typeof length !== 'undefined') {
+            checkLengthValue(length);
+        }
+
         const lengthVal = typeof length === 'number' ? length : this.length;
         const endPoint = Math.min(this.length, this._readOffset + lengthVal);
 
@@ -852,6 +848,11 @@ class SmartBuffer {
      * @param offset { Number } The offset to write the Buffer to.
      */
     writeBufferNT(value: Buffer, offset?: number) {
+        // Checks for valid numberic value;
+        if (typeof offset !== 'undefined') {
+            checkOffsetValue(offset);
+        }
+
         // Write Values
         this.writeBuffer(value, offset);
         this.writeUInt8(0x00, (typeof offset === 'number' ? offset + value.length : this._writeOffset));
@@ -1104,6 +1105,9 @@ class SmartBuffer {
      */
     private ensureInsertable(dataLength: number, offset: number) {
 
+        // Checks for valid numberic value;
+        checkOffsetValue(offset);
+
         // Ensure there is enough internal Buffer capacity.
         this.ensureCapacity(this.length + dataLength);
 
@@ -1216,12 +1220,12 @@ class SmartBuffer {
     private writeNumberValue(func: (value: number, offset?: number) => number, byteSize: number, value: number, offset?: number) {
         // If an offset was provided, validate it.
         if (typeof offset === 'number') {
-            checkOffsetValue(offset);
-
             // Check if we're writing beyond the bounds of the managed data.
             if (offset < 0) {
                 throw new Error(ERRORS.INVALID_WRITE_BEYOND_BOUNDS);
             }
+
+            checkOffsetValue(offset);
         }
 
         // Default to writeOffset if no offset value was given.
