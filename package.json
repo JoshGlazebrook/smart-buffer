@@ -48,7 +48,7 @@
     "prepublish": "npm install -g typescript && tsc -p ./",
     "test": "NODE_ENV=test mocha --recursive --compilers ts:ts-node/register",
     "coverage": "NODE_ENV=test nyc npm test",
-    "coveralls": "NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "NODE_ENV=test nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --type-check --project tsconfig.json 'src/**/*.ts'",
     "build": "tsc -p ./"
   },
