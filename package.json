@@ -39,17 +39,18 @@
     "nyc": "^11.0.2",
     "source-map-support": "^0.4.15",
     "ts-node": "^3.1.0",
+    "tslint": "^5.4.3",
     "typescript": "^2.3.4"
   },
-  "typings": "typings/index",
+  "typings": "typings",
   "dependencies": {},
   "scripts": {
-    "coverage": "tsc -p ./ && istanbul cover node_modules/mocha/bin/_mocha recursive build/test",
-    "fullcoverage": "tsc -p ./ && node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive build/test",
     "prepublish": "npm install -g typescript && tsc -p ./",
     "test": "NODE_ENV=test mocha --recursive --compilers ts:ts-node/register",
     "cover": "NODE_ENV=test nyc npm test",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
+    "lint": "tslint --type-check --project tsconfig.json 'src/**/*.ts'",
+    "build": "tsc -p ./"
   },
   "nyc": {
     "extension": [
