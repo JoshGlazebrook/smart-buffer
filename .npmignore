@@ -4,6 +4,7 @@ node_modules/
 npm-debug.log
 coverage
 src
+test
 tslint.json
 tsconfig.json
 .vscode

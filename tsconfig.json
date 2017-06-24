@@ -1,13 +1,13 @@
 {
    "compileOnSave": true,
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "commonjs",
         "sourceMap": true,
         "moduleResolution": "node",
         "outDir": "build",
         "watch": false,
-        "declaration": false,
+        "declaration": true,
         "declarationDir": "typings",
         "removeComments":false,
         "noImplicitAny": true,
@@ -15,10 +15,14 @@
             "node_modules/@types"
         ]
     },
+    "include": [
+        "src/**/*.ts"
+    ],
     "exclude": [
       "node_modules",
       ".idea",
       "build",
-      "typings"
+      "typings",
+      "test"
     ]
 }

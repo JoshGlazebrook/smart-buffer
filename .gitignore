@@ -17,3 +17,4 @@ npm-debug.log
 coverage
 build
 .nyc_output
+.DS_Store

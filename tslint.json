@@ -4,18 +4,39 @@
 		"curly": true,
 		"eofline": true,
 		"forin": false,
-		"indent": [true, "spaces"],
+		"indent": [
+			true,
+			"spaces"
+		],
 		"label-position": true,
-		"label-undefined": true,
-		"max-line-length": [true, 140],
-		"member-ordering": [true,
-			"public-before-private",
-			"static-before-instance",
-			"variables-before-functions"
+		"max-line-length": [
+			true,
+			140
+		],
+		"member-ordering": [
+			true,
+			{
+				"order": [
+					"public-static-field",
+					"protected-static-field",
+					"private-static-field",
+					"public-instance-field",
+					"protected-instance-field",
+					"private-instance-field",
+					"constructor",
+					"public-static-method",
+					"protected-static-method",
+					"private-static-method",
+					"public-instance-method",
+					"protected-instance-method",
+					"private-instance-method"
+				]
+			}
 		],
 		"no-arg": true,
-        "no-conditional-assignment": true,
-		"no-console": [true,
+		"no-conditional-assignment": true,
+		"no-console": [
+			true,
 			"debug",
 			"info",
 			"time",
@@ -26,9 +47,8 @@
 		"no-reference": true,
 		"no-construct": true,
 		"no-invalid-this": true,
-        "no-internal-module": true,
+		"no-internal-module": true,
 		"no-debugger": true,
-		"no-duplicate-key": true,
 		"no-duplicate-variable": true,
 		"no-empty": true,
 		"no-eval": true,
@@ -36,25 +56,36 @@
 		"no-string-literal": false,
 		"no-switch-case-fall-through": false,
 		"no-consecutive-blank-lines": [
-			true, 1
+			true,
+			1
 		],
 		"no-trailing-whitespace": true,
 		"no-unused-variable": true,
-		"no-unreachable": true,
 		"no-use-before-declare": true,
 		"no-var-keyword": true,
-		"one-line": [true,
+		"one-line": [
+			true,
 			"check-catch",
 			"check-else",
 			"check-whitespace"
 		],
-		"quotemark": [true, "single"],
+		"quotemark": [
+			true,
+			"single"
+		],
 		"radix": true,
-        "semicolon": [true, "always"],
-		"triple-equals": [true, "allow-null-check"],
+		"semicolon": [
+			true,
+			"always"
+		],
+		"triple-equals": [
+			true,
+			"allow-null-check"
+		],
 		"variable-name": false,
-        "switch-default": true,
-		"whitespace": [true,
+		"switch-default": true,
+		"whitespace": [
+			true,
 			"check-branch",
 			"check-decl",
 			"check-operator",
