@@ -48,7 +48,8 @@
     "fullcoverage": "tsc -p ./ && node_modules/.bin/istanbul -include-all-sources cover node_modules/mocha/bin/_mocha recursive build/test",
     "prepublish": "npm install -g typescript && tsc -p ./",
     "test": "NODE_ENV=test mocha --recursive --compilers ts:ts-node/register",
-    "cover": "NODE_ENV=test nyc npm t"
+    "cover": "NODE_ENV=test nyc npm test",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "nyc": {
     "extension": [

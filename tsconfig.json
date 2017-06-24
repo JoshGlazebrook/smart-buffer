@@ -1,13 +1,14 @@
 {
    "compileOnSave": true,
     "compilerOptions": {
-        "target": "es6",
+        "target": "es5",
         "module": "commonjs",
         "sourceMap": true,
         "moduleResolution": "node",
         "outDir": "build",
         "watch": false,
         "declaration": false,
+        "declarationDir": "typings",
         "removeComments":false,
         "noImplicitAny": true,
         "typeRoots": [
