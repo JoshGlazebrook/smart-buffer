@@ -590,13 +590,13 @@ declare class SmartBuffer {
        * @param dataLength { Number } The length of the data that needs to be written.
        * @param offset { Number } The offset of the data to be written (defaults to writeOffset).
        */
-    private ensureWriteable(dataLength, offset?);
+    private _ensureWriteable(dataLength, offset?);
     /**
        * Ensures that the internal Buffer is large enough to write at least the given amount of data.
        *
        * @param minLength { Number } The minimum length of the data needs to be written.
        */
-    private ensureCapacity(minLength);
+    private _ensureCapacity(minLength);
     /**
        * Reads a numeric number value using the provided function.
        *
@@ -606,7 +606,7 @@ declare class SmartBuffer {
        *
        * @param { Number }
        */
-    private readNumberValue(func, byteSize, offset?);
+    private _readNumberValue(func, byteSize, offset?);
     /**
        * Inserts a numeric number value based on the given offset and value.
        *
@@ -616,7 +616,7 @@ declare class SmartBuffer {
        * @param offset { Number } the offset to write the number at (REQUIRED).
        *
        */
-    private insertNumberValue(func, byteSize, value, offset);
+    private _insertNumberValue(func, byteSize, value, offset);
     /**
        * Writes a numeric number value based on the given offset and value.
        *
@@ -626,6 +626,6 @@ declare class SmartBuffer {
        * @param offset { Number } the offset to write the number at (REQUIRED).
        *
        */
-    private writeNumberValue(func, byteSize, value, offset?);
+    private _writeNumberValue(func, byteSize, value, offset?);
 }
 export { SmartBufferOptions, SmartBuffer };

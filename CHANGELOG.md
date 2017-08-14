@@ -4,7 +4,7 @@
 * Major breaking changes arriving in v4
 
 ### New Features
-* Ability to read data from a specific offset. ex: readInt8(5);
+* Ability to read data from a specific offset. ex: readInt8(5)
 * Ability to write over data when an offset is given (see breaking changes) ex:  writeInt8(5, 0);
 * Ability to set internal read and write offsets.
 
@@ -16,13 +16,13 @@
 * rewind(), skip(), moveTo() has been removed. (see setting internal read and write offsets)
 * Internal private properties are now prefixed with underscores (_)
 * **All** writeXXX() methods that are given an offset will now **overwrite data** instead of insert. (see write vs insert)
-* insertXXX() methods have been added for when you want to insert data at a specific offset.
+* insertXXX() methods have been added for when you want to insert data at a specific offset (this replaces the old behavior of writeXXX() when an offset was provided)
 
 
 ### Other Changes
 * Standardizd error messaging
 * Standardized offset/length bounds and sanity checking
-* 
+* General overall cleanup of code.
 
 ## 3.0.3
 > Released 02/19/2017
@@ -45,7 +45,7 @@
 
 ### Bug Fixes
 * readUIntXXXX() methods will now throw an exception if they attempt to read beyond the bounds of the valid buffer data available.
-    * **Note** This is technically a breaking change, so version is bumped to 3.x. 
+    * **Note** This is technically a breaking change, so version is bumped to 3.x.
 
 ## 2.0
 > Relased 01/30/2017

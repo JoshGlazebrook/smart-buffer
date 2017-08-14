@@ -636,7 +636,7 @@ describe('ensureWritable()', () => {
   let sbuff: any = SmartBuffer.fromSize(10);
 
   it('should increase the internal buffer size to accomodate given size.', () => {
-    sbuff.ensureWriteable(100);
+    sbuff._ensureWriteable(100);
 
     assert.strictEqual(sbuff.internalBuffer.length >= 100, true);
   });
