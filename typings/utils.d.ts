@@ -13,6 +13,7 @@ declare const ERRORS: {
     INVALID_LENGTH: string;
     INVALID_LENGTH_NON_NUMBER: string;
     INVALID_TARGET_OFFSET: string;
+    INVALID_TARGET_LENGTH: string;
     INVALID_READ_BEYOND_BOUNDS: string;
     INVALID_WRITE_BEYOND_BOUNDS: string;
 };
