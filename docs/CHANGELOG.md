@@ -1,7 +1,7 @@
 # Change Log
 ## 4.0
-> Released xx/xx/2017
-* Major breaking changes arriving in v4
+> Released 10/21/2017
+* Major breaking changes arriving in v4.
 
 ### New Features
 * Ability to read data from a specific offset. ex: readInt8(5)
@@ -13,9 +13,9 @@
 ### Breaking Changes
 
 * Old constructor patterns have been completely removed. It's now required to use the SmartBuffer.fromXXX() factory constructors. Read more on the v4 docs.
-* rewind(), skip(), moveTo() has been removed. (see setting internal read and write offsets)
-* Internal private properties are now prefixed with underscores (_)
-* **All** writeXXX() methods that are given an offset will now **overwrite data** instead of insert. (see write vs insert)
+* rewind(), skip(), moveTo() have been removed.
+* Internal private properties are now prefixed with underscores (_).
+* **All** writeXXX() methods that are given an offset will now **overwrite data** instead of insert
 * insertXXX() methods have been added for when you want to insert data at a specific offset (this replaces the old behavior of writeXXX() when an offset was provided)
 
 
