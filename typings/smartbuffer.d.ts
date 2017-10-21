@@ -411,7 +411,7 @@ declare class SmartBuffer {
        * Inserts a String
        *
        * @param value { String } The String value to insert.
-       * @param arg2 { Number | String } The offset to insert the string at, or the BufferEncoding to use.
+       * @param offset { Number } The offset to insert the string at.
        * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
        */
     insertString(value: string, offset: number, encoding?: BufferEncoding): SmartBuffer;
