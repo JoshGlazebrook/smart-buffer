@@ -7,17 +7,22 @@
         "moduleResolution": "node",
         "outDir": "build",
         "watch": false,
-        "declaration": false,
+        "declaration": true,
+        "declarationDir": "typings",
         "removeComments":false,
         "noImplicitAny": true,
         "typeRoots": [
             "node_modules/@types"
         ]
     },
+    "include": [
+        "src/**/*.ts"
+    ],
     "exclude": [
       "node_modules",
       ".idea",
       "build",
-      "typings"
+      "typings",
+      "test"
     ]
 }
