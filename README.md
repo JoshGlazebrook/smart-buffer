@@ -32,7 +32,7 @@ smart-buffer is a Buffer wrapper that adds automatic read & write offset trackin
 
 ## Looking for v3 docs?
 
-Legacy documentation for version 3 and prior can be found [here](https://github.com/JoshGlazebrook/smart-buffer/docs/README_v3.md).
+Legacy documentation for version 3 and prior can be found [here](https://github.com/JoshGlazebrook/smart-buffer/blob/master/docs/README_v3.md).
 
 ## Installing:
 
