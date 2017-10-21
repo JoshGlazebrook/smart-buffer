@@ -24,7 +24,7 @@ smart-buffer is a Buffer wrapper that adds automatic read & write offset trackin
 ## Breaking Changes in v4.0
 
 * Old constructor patterns have been completely removed. It's now required to use the SmartBuffer.fromXXX() factory constructors.
-* rewind(), skip(), moveTo() have been removed. (see setting internal read and write offsets)
+* rewind(), skip(), moveTo() have been removed. (see [offsets](#offsets))
 * Internal private properties are now prefixed with underscores (_)
 * **All** writeXXX() methods that are given an offset will now **overwrite data** instead of insert. (see [write vs insert](#write-vs-insert))
 * insertXXX() methods have been added for when you want to insert data at a specific offset (this replaces the old behavior of writeXXX() when an offset was provided)
