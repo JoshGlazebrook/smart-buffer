@@ -1,13 +1,14 @@
 /// <reference types="node" />
-/**
+declare module 'smart-buffer' {
+  /**
  * Object interface for constructing new SmartBuffer instances.
  */
-interface SmartBufferOptions {
+  interface SmartBufferOptions {
     encoding?: BufferEncoding;
     size?: number;
     buff?: Buffer;
-}
-declare class SmartBuffer {
+  }
+  class SmartBuffer {
     length: number;
     private _encoding;
     private _buff;
@@ -46,7 +47,9 @@ declare class SmartBuffer {
     /**
        * Type checking function that determines if an object is a SmartBufferOptions object.
        */
-    static isSmartBufferOptions(options: SmartBufferOptions): options is SmartBufferOptions;
+    static isSmartBufferOptions(
+      options: SmartBufferOptions
+    ): options is SmartBufferOptions;
     /**
        * Reads an Int8 value from the current read position or an optionally provided offset.
        *
@@ -406,7 +409,10 @@ declare class SmartBuffer {
        *
        * @return { String }
        */
-    readString(arg1?: number | BufferEncoding, encoding?: BufferEncoding): string;
+    readString(
+      arg1?: number | BufferEncoding,
+      encoding?: BufferEncoding
+    ): string;
     /**
        * Inserts a String
        *
@@ -414,7 +420,11 @@ declare class SmartBuffer {
        * @param offset { Number } The offset to insert the string at.
        * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
        */
-    insertString(value: string, offset: number, encoding?: BufferEncoding): SmartBuffer;
+    insertString(
+      value: string,
+      offset: number,
+      encoding?: BufferEncoding
+    ): SmartBuffer;
     /**
        * Writes a String
        *
@@ -422,7 +432,11 @@ declare class SmartBuffer {
        * @param arg2 { Number | String } The offset to write the string at, or the BufferEncoding to use.
        * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
        */
-    writeString(value: string, arg2?: number | BufferEncoding, encoding?: BufferEncoding): SmartBuffer;
+    writeString(
+      value: string,
+      arg2?: number | BufferEncoding,
+      encoding?: BufferEncoding
+    ): SmartBuffer;
     /**
        * Reads a null-terminated String from the current read position.
        *
@@ -438,7 +452,11 @@ declare class SmartBuffer {
        * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
        * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
        */
-    insertStringNT(value: string, offset: number, encoding?: BufferEncoding): void;
+    insertStringNT(
+      value: string,
+      offset: number,
+      encoding?: BufferEncoding
+    ): void;
     /**
        * Writes a null-terminated String.
        *
@@ -446,7 +464,11 @@ declare class SmartBuffer {
        * @param arg2 { Number | String } The offset to write the string to, or the BufferEncoding to use.
        * @param encoding { String } The BufferEncoding to use for writing strings (defaults to instance encoding).
        */
-    writeStringNT(value: string, arg2?: number | BufferEncoding, encoding?: BufferEncoding): void;
+    writeStringNT(
+      value: string,
+      arg2?: number | BufferEncoding,
+      encoding?: BufferEncoding
+    ): void;
     /**
        * Reads a Buffer from the internal read position.
        *
@@ -627,5 +649,6 @@ declare class SmartBuffer {
        *
        */
     private _writeNumberValue(func, byteSize, value, offset?);
+  }
+  export { SmartBufferOptions, SmartBuffer };
 }
-export { SmartBufferOptions, SmartBuffer };

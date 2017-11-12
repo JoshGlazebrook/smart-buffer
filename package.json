@@ -1,6 +1,6 @@
 {
   "name": "smart-buffer",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "smart-buffer is a Buffer wrapper that adds automatic read & write offset tracking, string operations, data insertions, and more.",
   "main": "build/smartbuffer.js",
   "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
@@ -29,20 +29,20 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "@types/chai": "4.0.4",
-    "@types/mocha": "2.2.43",
-    "@types/node": "8.0.46",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.51",
     "chai": "4.1.2",
     "coveralls": "3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "4.0.1",
     "mocha-lcov-reporter": "^1.3.0",
-    "nyc": "11.2.1",
+    "nyc": "^11.3.0",
     "source-map-support": "0.5.0",
     "ts-node": "3.3.0",
     "tslint": "5.8.0",
-    "typescript": "2.5.3"
+    "typescript": "2.6.1"
   },
-  "typings": "typings",
+  "typings": "typings/smartbuffer.d.ts",
   "dependencies": {},
   "scripts": {
     "prepublish": "npm install -g typescript && npm run build",
