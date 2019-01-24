@@ -1,4 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "tslint.exclude": "node_modules"
+    "tslint.exclude": "node_modules",
+    "prettier.printWidth": 120,
+    "prettier.singleQuote": true
 }
