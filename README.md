@@ -51,7 +51,7 @@ If you cloned this repo and wish to build the library manually use:
 
 ```javascript
 // Javascript
-const SmartBuffer = require('smart-buffer').SmartBuffer;
+const { SmartBuffer } = require('smart-buffer');
 
 // Typescript
 import { SmartBuffer, SmartBufferOptions} from 'smart-buffer';
