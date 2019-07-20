@@ -298,10 +298,10 @@ describe('Reading/Writing To/From SmartBuffer', () => {
         iBuffer.insertBigUInt64LE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(8), 0);
         iBuffer.insertBigUInt64BE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(9), 0);
 
-        assert.equal(iBuffer.readBigInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(6));
-        assert.equal(iBuffer.readBigInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(7));
-        assert.equal(iBuffer.readBigUInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(8));
-        assert.equal(iBuffer.readBigUInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(9));
+        assert.equal(iBuffer.readBigInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(9));
+        assert.equal(iBuffer.readBigInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(8));
+        assert.equal(iBuffer.readBigUInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(7));
+        assert.equal(iBuffer.readBigUInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(6));
       });
     });
 
@@ -319,21 +319,21 @@ describe('Reading/Writing To/From SmartBuffer', () => {
       // exception, and no cast really takes place. These casts are solely to
       // satisfy the type checker, as BigInt doesn't exist at runtime in these tests
 
-      describe('Writing throws an exception', () => {
+      it('Writing throws an exception', () => {
         assert.throws(() => buffer.writeBigInt64LE(1 as any as bigint), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.writeBigInt64BE(2 as any as bigint), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.writeBigUInt64LE(1 as any as bigint), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.writeBigUInt64BE(2 as any as bigint), 'Platform does not support JS BigInt type.');
       });
 
-      describe('Inserting throws an exception', () => {
+      it('Inserting throws an exception', () => {
         assert.throws(() => buffer.insertBigInt64LE(1 as any as bigint, 0), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.insertBigInt64BE(2 as any as bigint, 0), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.insertBigUInt64LE(1 as any as bigint, 0), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.insertBigUInt64BE(2 as any as bigint, 0), 'Platform does not support JS BigInt type.');
       });
 
-      describe('Reading throws an exception', () => {
+      it('Reading throws an exception', () => {
         assert.throws(() => buffer.readBigInt64LE(), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.readBigInt64BE(), 'Platform does not support JS BigInt type.');
         assert.throws(() => buffer.readBigUInt64LE(), 'Platform does not support JS BigInt type.');
