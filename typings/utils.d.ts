@@ -48,4 +48,8 @@ declare function checkOffsetValue(offset: any): void;
  * @param { SmartBuffer } buff The SmartBuffer instance to check against.
  */
 declare function checkTargetOffset(offset: number, buff: SmartBuffer): void;
-export { ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue, checkLengthValue, checkTargetOffset };
+/**
+ * Throws if Node.js version is too low to support bigint
+ */
+declare function bigIntVersionCheck(): void;
+export { ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue, checkLengthValue, checkTargetOffset, bigIntVersionCheck };

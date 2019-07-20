@@ -269,6 +269,79 @@ describe('Reading/Writing To/From SmartBuffer', () => {
     });
   });
 
+
+  describe('BigInt values', () => {
+    describe('When BigInt is available', () => {
+      before(function() {
+        if (typeof BigInt === 'undefined') {
+            this.skip();
+        }
+      });
+
+      it('Reading written-to buffer should read back the results of the insert', () => {
+        const wBuffer = new SmartBuffer();
+        wBuffer.writeBigInt64LE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(2));
+        wBuffer.writeBigInt64BE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(3));
+        wBuffer.writeBigUInt64LE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(4));
+        wBuffer.writeBigUInt64BE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(5));
+
+        assert.equal(wBuffer.readBigInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(2));
+        assert.equal(wBuffer.readBigInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(3));
+        assert.equal(wBuffer.readBigUInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(4));
+        assert.equal(wBuffer.readBigUInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(5));
+      });
+
+      it('Reading inserted-into buffer should read back the results of the insert', () => {
+        const iBuffer = new SmartBuffer();
+        iBuffer.insertBigInt64LE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(6), 0);
+        iBuffer.insertBigInt64BE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(7), 0);
+        iBuffer.insertBigUInt64LE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(8), 0);
+        iBuffer.insertBigUInt64BE(BigInt(Number.MAX_SAFE_INTEGER) * BigInt(9), 0);
+
+        assert.equal(iBuffer.readBigInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(6));
+        assert.equal(iBuffer.readBigInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(7));
+        assert.equal(iBuffer.readBigUInt64BE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(8));
+        assert.equal(iBuffer.readBigUInt64LE(), BigInt(Number.MAX_SAFE_INTEGER) * BigInt(9));
+      });
+    });
+
+    describe('When BigInt is unavailable', () => {
+      beforeEach(function () {
+        if (typeof BigInt === 'function') {
+            this.skip();
+        }
+      });
+      const buffer = new SmartBuffer();
+
+      // Taking a Number to a BigInt as we do below is semantically invalid,
+      // and implicit casting between Number and BigInt throws a TypeError in
+      // JavaScript. However here, these methods immediately throw the platform
+      // exception, and no cast really takes place. These casts are solely to
+      // satisfy the type checker, as BigInt doesn't exist at runtime in these tests
+
+      describe('Writing throws an exception', () => {
+        assert.throws(() => buffer.writeBigInt64LE(1 as any as bigint), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.writeBigInt64BE(2 as any as bigint), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.writeBigUInt64LE(1 as any as bigint), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.writeBigUInt64BE(2 as any as bigint), 'Platform does not support JS BigInt type.');
+      });
+
+      describe('Inserting throws an exception', () => {
+        assert.throws(() => buffer.insertBigInt64LE(1 as any as bigint, 0), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.insertBigInt64BE(2 as any as bigint, 0), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.insertBigUInt64LE(1 as any as bigint, 0), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.insertBigUInt64BE(2 as any as bigint, 0), 'Platform does not support JS BigInt type.');
+      });
+
+      describe('Reading throws an exception', () => {
+        assert.throws(() => buffer.readBigInt64LE(), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.readBigInt64BE(), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.readBigUInt64LE(), 'Platform does not support JS BigInt type.');
+        assert.throws(() => buffer.readBigUInt64BE(), 'Platform does not support JS BigInt type.');
+      });
+    });
+  });
+
   describe('Basic String Values', () => {
     let reader = new SmartBuffer();
     reader.writeStringNT('hello');

@@ -93,4 +93,13 @@ function isInteger(value: number) {
   return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
-export { ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue, checkLengthValue, checkTargetOffset };
+/**
+ * Throws if Node.js version is too low to support bigint
+ */
+function bigIntVersionCheck() {
+  if (typeof (global as any).BigInt === 'undefined') {
+    throw new Error('Platform does not support JS BigInt type.');
+  }
+}
+
+export { ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue, checkLengthValue, checkTargetOffset, bigIntVersionCheck };
