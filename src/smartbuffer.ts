@@ -179,7 +179,7 @@ class SmartBuffer {
    */
   readBigInt64BE(offset?: number): bigint {
     bigIntVersionCheck();
-    return this._readNumberValue((Buffer.prototype as any).readBigInt64BE, 8, offset);
+    return this._readNumberValue(Buffer.prototype.readBigInt64BE, 8, offset);
   }
 
   /**
@@ -190,7 +190,7 @@ class SmartBuffer {
    */
   readBigInt64LE(offset?: number): bigint {
     bigIntVersionCheck();
-    return this._readNumberValue((Buffer.prototype as any).readBigInt64LE, 8, offset);
+    return this._readNumberValue(Buffer.prototype.readBigInt64LE, 8, offset);
   }
 
   /**
@@ -324,7 +324,7 @@ class SmartBuffer {
    */
   writeBigInt64BE(value: bigint, offset?: number): SmartBuffer {
     bigIntVersionCheck();
-    return this._writeNumberValue((Buffer.prototype as any).writeBigInt64BE, 8, value, offset);
+    return this._writeNumberValue(Buffer.prototype.writeBigInt64BE, 8, value, offset);
   }
 
   /**
@@ -337,7 +337,7 @@ class SmartBuffer {
    */
   insertBigInt64BE(value: bigint, offset: number): SmartBuffer {
     bigIntVersionCheck();
-    return this._insertNumberValue((Buffer.prototype as any).writeBigInt64BE, 8, value, offset);
+    return this._insertNumberValue(Buffer.prototype.writeBigInt64BE, 8, value, offset);
   }
 
   /**
@@ -350,7 +350,7 @@ class SmartBuffer {
    */
   writeBigInt64LE(value: bigint, offset?: number): SmartBuffer {
     bigIntVersionCheck();
-    return this._writeNumberValue((Buffer.prototype as any).writeBigInt64LE, 8, value, offset);
+    return this._writeNumberValue(Buffer.prototype.writeBigInt64LE, 8, value, offset);
   }
 
   /**
@@ -363,7 +363,7 @@ class SmartBuffer {
    */
   insertBigInt64LE(value: bigint, offset: number): SmartBuffer {
     bigIntVersionCheck();
-    return this._insertNumberValue((Buffer.prototype as any).writeBigInt64LE, 8, value, offset);
+    return this._insertNumberValue(Buffer.prototype.writeBigInt64LE, 8, value, offset);
   }
 
   // Unsigned Integers

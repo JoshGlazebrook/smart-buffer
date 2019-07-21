@@ -86,14 +86,14 @@ declare class SmartBuffer {
      * Reads a BigInt64BE value from the current read position or an optionally provided offset.
      *
      * @param offset { Number } The offset to read data from (optional)
-     * @return { Number }
+     * @return { BigInt }
      */
     readBigInt64BE(offset?: number): bigint;
     /**
      * Reads a BigInt64LE value from the current read position or an optionally provided offset.
      *
      * @param offset { Number } The offset to read data from (optional)
-     * @return { Number }
+     * @return { BigInt }
      */
     readBigInt64LE(offset?: number): bigint;
     /**

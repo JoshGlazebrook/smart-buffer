@@ -93,11 +93,26 @@ function isInteger(value: number) {
   return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
+interface BigInt {
+}
+
+interface Buffer {
+  readBigInt64BE(offset?: number): bigint;
+  readBigInt64LE(offset?: number): bigint;
+  readBigUInt64BE(offset?: number): bigint;
+  readBigUInt64LE(offset?: number): bigint;
+
+  writeBigInt64BE(value: bigint, offset?: number): number;
+  writeBigInt64LE(value: bigint, offset?: number): number;
+  writeBigUInt64BE(value: bigint, offset?: number): number;
+  writeBigUInt64LE(value: bigint, offset?: number): number;
+}
+
 /**
  * Throws if Node.js version is too low to support bigint
  */
 function bigIntVersionCheck() {
-  if (typeof (global as any).BigInt === 'undefined') {
+  if (typeof BigInt === 'undefined') {
     throw new Error('Platform does not support JS BigInt type.');
   }
 }
