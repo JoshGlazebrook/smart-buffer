@@ -1,4 +1,5 @@
 import { SmartBuffer } from './smartbuffer';
+import { Buffer } from 'buffer';
 
 /**
  * Error strings
@@ -93,4 +94,32 @@ function isInteger(value: number) {
   return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 
-export { ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue, checkLengthValue, checkTargetOffset };
+interface Buffer {
+  readBigInt64BE(offset?: number): bigint;
+  readBigInt64LE(offset?: number): bigint;
+  readBigUInt64BE(offset?: number): bigint;
+  readBigUInt64LE(offset?: number): bigint;
+
+  writeBigInt64BE(value: bigint, offset?: number): number;
+  writeBigInt64LE(value: bigint, offset?: number): number;
+  writeBigUInt64BE(value: bigint, offset?: number): number;
+  writeBigUInt64LE(value: bigint, offset?: number): number;
+}
+
+/**
+ * Throws if Node.js version is too low to support bigint
+ */
+function bigIntAndBufferInt64Check(bufferMethod: keyof Buffer) {
+  if (typeof BigInt === 'undefined') {
+    throw new Error('Platform does not support JS BigInt type.');
+  }
+
+  if (typeof Buffer.prototype[bufferMethod] === 'undefined') {
+    throw new Error(`Platform does not support Buffer.prototype.${bufferMethod}.`);
+  }
+}
+
+export {
+  ERRORS, isFiniteInteger, checkEncoding, checkOffsetValue,
+  checkLengthValue, checkTargetOffset, bigIntAndBufferInt64Check
+};
