@@ -263,7 +263,8 @@ const buff = SmartBuffer.fromOptions({
 
 ## Integers
 
-### readInt8([offset])
+### buff.readInt8([offset])
+### buff.readUInt8([offset])
 - ```offset``` *{number}* Optional position to start reading data from. **Default**: ```Auto managed offset```
 - Returns *{number}*
 
@@ -356,7 +357,7 @@ Insert a 32 bit integer value.
 
 Read a Float value.
 
-### buff.eadDoubleBE([offset])
+### buff.readDoubleBE([offset])
 ### buff.readDoubleLE([offset])
 - ```offset``` *{number}* Optional position to start reading data from. **Default**: ```Auto managed offset```
 - Returns *{number}*
