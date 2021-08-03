@@ -1,12 +1,13 @@
 {
-  "name": "smart-buffer",
-  "version": "4.1.0",
+  "name": "@syvita/smart-buffer",
+  "private": false,
+  "version": "4.2.0",
   "description": "smart-buffer is a Buffer wrapper that adds automatic read & write offset tracking, string operations, data insertions, and more.",
   "main": "build/smartbuffer.js",
-  "homepage": "https://github.com/JoshGlazebrook/smart-buffer/",
+  "homepage": "https://github.com/syvita/smart-buffer/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JoshGlazebrook/smart-buffer.git"
+    "url": "https://github.com/syvita/smart-buffer.git"
   },
   "bugs": {
     "url": "https://github.com/JoshGlazebrook/smart-buffer/issues"
@@ -24,7 +25,7 @@
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
   },
-  "author": "Josh Glazebrook",
+  "author": "Josh Glazebrook & Asteria",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
