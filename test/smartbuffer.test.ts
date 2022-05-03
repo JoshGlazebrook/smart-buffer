@@ -611,6 +611,40 @@ describe('Reading/Writing To/From SmartBuffer', () => {
       });
     });
   });
+
+  describe('VarInt values', () => {
+    let reader = new SmartBuffer();
+
+    reader.writeVarInt(0);
+    reader.writeVarInt(128);
+    reader.writeVarInt(25565);
+    reader.insertVarInt(0, 1); // writeVarInt(0) will write 1 byte, insert after it
+
+    it('should equal the correct values that were written above', () => {
+      assert.strictEqual(reader.readVarInt(), 0);
+      assert.strictEqual(reader.readVarInt(), 0);
+      assert.strictEqual(reader.readVarInt(), 128);
+      assert.strictEqual(reader.readVarInt(), 25565);
+    });
+
+    it('should throw an exception if attempting to read VarInt from a buffer with not enough data left', () => {
+      assert.throws(() => {
+        reader.readVarInt();
+      });
+    });
+
+    it('should throw an exception if attempting to write VarInt smaller than 0', () => {
+      assert.throws(() => {
+        reader.writeVarInt(-1);
+      });
+    });
+
+    it('should throw an exception if attempting to write VarInt to a negative offset.', () => {
+      assert.throws(() => {
+        reader.writeVarInt(20, -5);
+      });
+    });
+  });
 });
 
 describe('Skipping around data', () => {

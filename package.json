@@ -47,7 +47,7 @@
   "dependencies": {},
   "scripts": {
     "prepublish": "npm install -g typescript && npm run build",
-    "test": "NODE_ENV=test mocha --recursive --require ts-node/register test/**/*.ts",
+    "test": "mocha --recursive --require ts-node/register test/**/*.ts",
     "coverage": "NODE_ENV=test nyc npm test",
     "coveralls": "NODE_ENV=test nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint --type-check --project tsconfig.json 'src/**/*.ts'",
