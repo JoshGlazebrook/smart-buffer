@@ -529,6 +529,26 @@ Write a null terminated Buffer.
 
 Insert a null terminated Buffer.
 
+## VarInt
+
+[Protobuf VarInt](https://developers.google.com/protocol-buffers/docs/encoding#varints) is a special variant of integer that varies in it's encoded bytes length.
+Current implementation doesn't support negative VarInts.
+
+### buff.readVarInt()
+
+Read a VarInt.
+
+### buff.writeVarInt(value[, offset])
+- ```value``` *{Number}* The integer value to write.
+- ```offset``` *{number}* An optional offset to write the value to. **Default:** ```Auto managed offset```
+
+Write a VarInt.
+
+### buff.insertVarInt(value, offset)
+- ```value``` *{Number}* The integer value to write.
+- ```offset``` *{number}* The offset to insert the value to.
+
+Insert a VarInt.
 
 ## Offsets
 

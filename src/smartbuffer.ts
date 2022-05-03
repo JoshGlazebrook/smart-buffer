@@ -998,6 +998,81 @@ class SmartBuffer {
     return this;
   }
 
+  // VarInts
+
+  /**
+   * Inserts VarInt.
+   * 
+   * @param value { Number } The number to write.
+   * @param offset { Number } The offset to insert the number to.
+   *
+   * @return { Number }
+   */
+   public insertVarInt(value: number, offset: number): SmartBuffer {
+    checkOffsetValue(offset);
+
+    this.insertBuffer(this._intToVarInt(value), offset);
+
+    return this;
+  }
+
+  /**
+   * Writes a VarInt to the current write position.
+   * 
+   * @param value { Number } The number to write.
+   * @param offset { Number } The offset to write the number to.
+   *
+   * @return { Number }
+   */
+  public writeVarInt(value: number, offset?: number): SmartBuffer {
+    // Checks for valid numberic value;
+    if (typeof offset !== 'undefined') {
+      checkOffsetValue(offset);
+    }
+    
+    this.writeBuffer(this._intToVarInt(value), offset);
+
+    return this;
+  }
+
+  /**
+   * Reads a VarInt from the internal read position.
+   *
+   * @return { Number }
+   */
+  public readVarInt(): number {
+    const MSB = 0x80;
+    const REST = 0x7F;
+
+    let res = 0;
+    let shift = 0;
+    let counter = 0;
+    let byte = 0;
+
+    do {
+      const readOffset = this._readOffset + counter;
+
+      if (readOffset > this.length - 1) {
+        throw new RangeError('Could not read full VarInt - end of buffer.');
+      }
+
+      if (shift > 49) {
+        throw new RangeError('Could not decode VarInt');
+      }
+
+      byte = this._buff[readOffset];
+      counter += 1;
+      res += shift < 28
+        ? (byte & REST) << shift
+        : (byte & REST) * Math.pow(2, shift);
+      shift += 7;
+    } while (byte >= MSB);
+
+    this._readOffset += counter;
+
+    return res;
+  }
+
   /**
    * Clears the SmartBuffer instance to its original empty state.
    */
@@ -1410,6 +1485,40 @@ class SmartBuffer {
     }
 
     return this;
+  }
+
+  private _intToVarInt(value: number): Buffer {
+    if (value < 0) {
+      throw new Error('Cannot insert VarInt smaller than 0');
+    }
+
+    const INT = Math.pow(2, 31);
+    const MSB = 0x80;
+    const REST = 0x7F;
+    const MSBALL = ~REST;
+
+    if (value > Number.MAX_SAFE_INTEGER) {
+      throw new RangeError('Could not encode varint');
+    }
+
+    const out: number[] = [];
+    let outOffset = 0;
+
+    while (value >= INT) {
+      out[outOffset] = (value & 0xFF) | MSB;
+      outOffset += 1;
+      value /= 128;
+    }
+
+    while (value & MSBALL) {
+      out[outOffset] = (value & 0xFF) | MSB;
+      outOffset += 1;
+      value >>>= 7;
+    }
+
+    out[outOffset] = value | 0;
+
+    return Buffer.from(out);
   }
 }
 
