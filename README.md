@@ -564,6 +564,38 @@ buff.writeOffset = 10;
 console.log(buff.writeOffset) // 10
 ```
 
+### buff.readSkip(length)
+- ```length``` *{number}* The length of data to skip.
+
+Skips reading for a specified `length` from the current read offset.
+
+This method is just sugar for incrementing the read offset in a chainable way.
+
+Examples:
+```javascript
+buff.readOffset = 5;
+
+buff.readSkip(10).readString(4);
+
+console.log(buff.readOffset) // 19
+```
+
+### buff.writeSkip(length)
+- ```length``` *{number}* The length of data to skip.
+
+Skips writing for a specified `length` from the current write offset. The buffer will be zero-padded for the skipped range.
+
+This method is just sugar for incrementing the write offset in a chainable way.
+
+Examples:
+```javascript
+buff.writeOffset = 5;
+
+buff.writeSkip(10).writeString('cool');
+
+console.log(buff.writeOffset) // 19
+```
+
 ### buff.encoding
 ### buff.encoding(encoding)
 - ```encoding``` *{string}* The new string encoding to set.

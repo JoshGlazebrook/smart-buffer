@@ -999,6 +999,37 @@ class SmartBuffer {
   }
 
   /**
+   * Skips reading for a specified `length` from the current read position.
+   *
+   * This method is just sugar for incrementing the read offset in a chainable way.
+   *
+   * @param length { Number } The length of data to skip.
+   *
+   * @return this
+   */
+  readSkip(length: number): SmartBuffer {
+    checkLengthValue(length);
+    this.readOffset += length;
+    return this;
+  }
+
+  /**
+   * Skips writing for a specified `length` from the current write position.
+   * The buffer will be zero-padded for the skipped range.
+   *
+   * This method is just sugar for incrementing the write offset in a chainable way.
+   *
+   * @param length { Number } The length of data to skip.
+   *
+   * @return this
+   */
+  writeSkip(length: number): SmartBuffer {
+    checkLengthValue(length);
+    this.writeBuffer(Buffer.alloc(length));
+    return this;
+  }
+
+  /**
    * Clears the SmartBuffer instance to its original empty state.
    */
   clear(): SmartBuffer {
