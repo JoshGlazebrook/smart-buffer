@@ -614,26 +614,44 @@ describe('Reading/Writing To/From SmartBuffer', () => {
 });
 
 describe('Skipping around data', () => {
-  let writer = new SmartBuffer();
-  writer.writeStringNT('hello');
-  writer.writeUInt16LE(6699);
-  writer.writeStringNT('world!');
+  it('Should skip writing for a given length', () => {
+    const skipLength = 4;
 
-  it('Should equal the UInt16 that was written above', () => {
-    let reader = SmartBuffer.fromBuffer(writer.toBuffer());
-    reader.readOffset += 6;
-    assert.strictEqual(reader.readUInt16LE(), 6699);
-    reader.readOffset = 0;
-    assert.strictEqual(reader.readStringNT(), 'hello');
-    reader.readOffset -= 6;
-    assert.strictEqual(reader.readStringNT(), 'hello');
-  });
+    const writer = new SmartBuffer();
+    writer.writeStringNT('hello');
+    assert.strictEqual(writer.writeOffset, 6);
+    writer.writeSkip(skipLength);
+    assert.strictEqual(writer.writeOffset, 6 + skipLength);
 
-  it('Should throw an error when attempting to skip more bytes than actually exist.', () => {
-    let reader = SmartBuffer.fromBuffer(writer.toBuffer());
+    const reader = SmartBuffer.fromBuffer(writer.toBuffer());
+    assert.strictEqual(reader.readStringNT(), 'hello');
+    assert.deepEqual(reader.readBuffer(skipLength), Buffer.alloc(skipLength));
 
     assert.throws(() => {
-      reader.readOffset = 10000;
+      writer.writeSkip(-1);
+    });
+  });
+
+  it('Should skip reading for a given length', () => {
+    const skipLength = 4;
+
+    const writer = new SmartBuffer();
+    writer.writeStringNT('hello');
+    writer.writeStringNT('world!');
+
+    const reader = SmartBuffer.fromBuffer(writer.toBuffer());
+    assert.strictEqual(reader.readStringNT(), 'hello');
+    assert.strictEqual(reader.readOffset, 6);
+    reader.readSkip(skipLength);
+    assert.strictEqual(reader.readOffset, 6 + skipLength);
+    assert.strictEqual(reader.readStringNT(), 'd!');
+
+    assert.throws(() => {
+      reader.readSkip(-1);
+    });
+
+    assert.throws(() => {
+      reader.readSkip(1000);
     });
   });
 });
@@ -652,16 +670,34 @@ describe('Setting write and read offsets', () => {
     assert.strictEqual(writer.readOffset, 10);
   });
 
-  it('should throw an error when given an offset that is out of bounds', () => {
+  it('should throw an error when given a read offset that is out of bounds', () => {
     assert.throws(() => {
       writer.readOffset = -1;
     });
+
+    assert.throws(() => {
+      writer.readOffset = 1000;
+    });
   });
 
-  it('should throw an error when given an offset that is out of bounds', () => {
+  it('should throw an error when given a write offset that is out of bounds', () => {
+    assert.throws(() => {
+      writer.writeOffset = -1;
+    });
+
     assert.throws(() => {
       writer.writeOffset = 1000;
     });
+  });
+
+  it('should skip around data', () => {
+    const reader = SmartBuffer.fromBuffer(writer.toBuffer());
+    reader.readOffset += 10;
+    assert.strictEqual(reader.readStringNT(), 'mynameisjosh');
+    reader.readOffset = 0;
+    assert.strictEqual(reader.readString(5), 'hello');
+    reader.readOffset -= 5;
+    assert.strictEqual(reader.readStringNT(), 'hellotheremynameisjosh');
   });
 });
 
